@@ -19,12 +19,12 @@ void mount_program(node_t *head, char *filename) {
     label_head = initialize_list(label_head);
     label_head = make_label_addr_list(label_head, head);
 
-    temp = strchr(filename, '.');
-    *temp = '\0';
-    strcat(filename, ".pre.txt");
-
-    fp = fopen (filename, "w");
-    pre_processed = fopen("pre_processed.txt", "w");
+    // temp = strchr(filename, '.');
+    // *temp = '\0';
+    // strcat(filename, ".pre.txt");
+    //
+    // fp = fopen (filename, "w");
+    // pre_processed = fopen("pre_processed.txt", "w");
 
     while(current != NULL) {
         directive_flag = in_vector (current->opcode, directives, 7);
@@ -127,28 +127,29 @@ void mount_program(node_t *head, char *filename) {
             }
         }
 
-        if (fp != NULL) {
-            if (line[1][0] != '\0') {
-                if (fp != NULL) {
-                    fprintf(pre_processed, "%d\t", count);
-                }
-                for (i = 0; i < 5; i++) {
-                    fprintf(fp, "%s\t", line[i]);
-                    if (fp != NULL) {
-                        if (line[i][0] == '\0') {
-                            fprintf(pre_processed, "00\t");
-                        }
-                        else {
-                            fprintf(pre_processed, "%s\t", line[i]);
-                        }
-                    }
+        // if (fp != NULL) {
+        //     if (line[1][0] != '\0') {
+        //         if (fp != NULL) {
+        //             fprintf(pre_processed, "%d\t", count);
+        //         }
+        //         for (i = 0; i < 5; i++) {
+        //             fprintf(fp, "%s\t", line[i]);
+        //             if (fp != NULL) {
+        //                 if (line[i][0] == '\0') {
+        //                     fprintf(pre_processed, "00\t");
+        //                 }
+        //                 else {
+        //                     fprintf(pre_processed, "%s\t", line[i]);
+        //                 }
+        //             }
+        //
+        //         }
+        //             fprintf(fp, "\n");
+        //             fprintf(pre_processed, "\n");
+        //
+        //     }
+        // }
 
-                }
-                    fprintf(fp, "\n");
-                    fprintf(pre_processed, "\n");
-
-            }
-        }
         count = 0;
         memset(current->label, 0, sizeof(current->label));
         memset(line, 0, sizeof(line[0][0]) * 5 * MAXCN);
@@ -158,8 +159,8 @@ void mount_program(node_t *head, char *filename) {
 
     delete_list(label_head);
 
-    fclose(fp);
-    fclose(pre_processed);
+    // fclose(fp);
+    // fclose(pre_processed);
 
 }
 
