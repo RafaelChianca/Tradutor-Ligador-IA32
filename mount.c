@@ -218,40 +218,28 @@ int get_opcode (char *mneumonic) {
 
 }
 
-void write_in_file (int *semantic_errors, node_t *head, char *filename, int errors) {
+void write_in_file (node_t *head, char *filename) {
     FILE *fp;
     node_t *current = head->next;
     char *temp, filename_buffer[MAXCN];
-    int i, flag = 0;
+    int i;
 
     strcpy(filename_buffer, filename);
     temp = strchr(filename_buffer, '.');
     *temp = '\0';
 
-    if (errors) {
-        strcat(filename_buffer, "_errors.txt");
-    }
-    else {
-        strcat(filename_buffer, ".obj.txt");
-    }
+    strcat(filename_buffer, ".obj.txt");
 
     fp = fopen (filename_buffer, "w");
 
     if (fp != NULL) {
         while (current != NULL) {
-            if (!errors) {
-                fprintf(fp, "%s ", current->opcode);
-                fprintf(fp, "%s ", current->op1);
-                fprintf(fp, "%s ", current->op2);
-                fprintf(fp, "%s ", current->op3);
+            fprintf(fp, "%s\t", current->opcode);
+            fprintf(fp, "%s\t", current->op1);
+            fprintf(fp, "%s\t", current->op2);
+            fprintf(fp, "%s\t", current->op3);
+            fprintf(fp, "\n");
 
-            }
-            else {
-                fprintf(fp, "%d", current->count);
-                fprintf(fp, "\t");
-                fprintf(fp, "\n");
-            }
-            flag = 0;
             current = current->next;
         }
         fclose (fp);

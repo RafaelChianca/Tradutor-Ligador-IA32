@@ -6,10 +6,9 @@
 void read_file (char *filename, node_t *head) {
 
     FILE *asm_file;
-    node_t *node;
-    int address_counter = 0, syntatic_errors = 0, aux, aux2 = 0, line_error = 0;
-    int i = 0, first_char_flag = 0, second_op_flag = 0, index = 1, line_counter = 0;
-    int j = 0, label_flag = 0, comment_flag = 0, copy_flag = 0, space_flag = 0, plus_flag = 0;
+    int address_counter = 0, aux, line_error = 0;
+    int i = 0, first_char_flag = 0, index = 1, line_counter = 0;
+    int j = 0, label_flag = 0, comment_flag = 0, plus_flag = 0;
     char file_token;
     char line[5][MAXCN] = {{0}};
     char buffer[MAXCN] = {0}, backup_buffer[MAXCN] = {0};
@@ -88,15 +87,10 @@ void read_file (char *filename, node_t *head) {
             if (!comment_flag && index >= 2) {
                 aux = address_counter;
 
-                syntatic_errors = syntatic_analyzer(line, &address_counter);
+                syntatic_analyzer(line, &address_counter);
 
-                /*two ':' in sequence*/
-                if (line_error < 2) {
-                    head = add_line(head, line[0], line[1], line[2], line[3], line[4], line_counter, aux);
-                }
-                else {
-                    head = add_line(head, line[0], line[1], line[2], line[3], line[4], line_counter, aux);
-                }
+                head = add_line(head, line[0], line[1], line[2], line[3], line[4], line_counter, aux);
+
                 memset(line, 0, sizeof(line[0][0]) * 5 * MAXCN);
                 index = 1;
             } else {
