@@ -206,10 +206,10 @@ bool is_numeric (const char *s) {
 }
 
 int get_opcode (char *mneumonic) {
-    char *opcode[] = {"ADD","SUB","MULT","DIV","JMP","JMPN","JMPP","JMPZ","COPY","LOAD","STORE","INPUT","OUTPUT","STOP"};
+    char *opcode[] = {"ADD","SUB","MULT","DIV","JMP","JMPN","JMPP","JMPZ","COPY","LOAD","STORE","INPUT","OUTPUT","STOP","C_INPUT","C_OUTPUT","H_INPUT","H_OUTPUT","S_INPUT","S_OUTPUT"};
     int i;
 
-    for (i = 0; i < 14; i++) {
+    for (i = 0; i < 20; i++) {
         if (strcmp(opcode[i], mneumonic) == 0) {
             return i+1;
         }
