@@ -15,9 +15,6 @@ node_t* initialize_list(node_t *head) {
 
     head->count = 0;
     head->address = 0;
-    head->lexic_flag = 0;
-    head->syntatic_flag = 0;
-    head->semantic_flag = 0;
     head->next = NULL;
 
     return head;
@@ -26,7 +23,7 @@ node_t* initialize_list(node_t *head) {
 void print_list(node_t *head) {
 
     node_t *current = head->next;
-        printf("\nLine\tAddr\tLabel\tOpcode\tOp1\tOp2\tLexic\tSyntatic\n");
+        printf("\nLine\tAddr\tLabel\tOpcode\tOp1\tOp2\tOp3\n");
         while (current != NULL) {
             printf("%d\t", current->count);
             printf("%d\t", current->address);
@@ -34,14 +31,13 @@ void print_list(node_t *head) {
             printf("%s\t", current->opcode);
             printf("%s\t", current->op1);
             printf("%s\t", current->op2);
-            printf("%d\t", current->lexic_flag);
-            printf("%d\n", current->syntatic_flag);
+            printf("%s\t", current->op3);
             current = current->next;
         }
 
 }
 
-node_t* add_line(node_t *head, char *label ,char *opcode, char *op1, char *op2, int count, int address, bool lexic, bool syntatic) {
+node_t* add_line(node_t *head, char *label ,char *opcode, char *op1, char *op2, char *op3, int count, int address) {
     node_t * current = head;
     while (current->next != NULL) {
         current = current->next;
@@ -51,14 +47,31 @@ node_t* add_line(node_t *head, char *label ,char *opcode, char *op1, char *op2, 
     strcpy(current->next->opcode, opcode);
     strcpy(current->next->op1, op1);
     strcpy(current->next->op2, op2);
+    strcpy(current->next->op3, op3);
     current->next->count = count;
     current->next->address = address;
-    current->next->lexic_flag = lexic;
-    current->next->syntatic_flag = syntatic;
 
     current->next->next = NULL;
 
     return head;
+}
+
+node_t* delete_node(node_t* head, int line) {
+    node_t * current = head->next;
+    node_t * previous = head;
+
+    while (current->count != line) {
+        previous = current;
+        current = current->next;
+    }
+
+    previous->next = current->next;
+    free(current);
+    memset(current->label, 0, sizeof(current->label));
+    current = previous;
+
+    return current;
+
 }
 
 void delete_list(node_t * head)  {
@@ -70,4 +83,27 @@ void delete_list(node_t * head)  {
         free(current);
         current = next;
     }
+}
+
+node_t* in_list(char *needle, node_t *haystack) {
+    node_t* current = haystack->next;
+    while (current != NULL) {
+        if (strcmp(current->label, needle) != 0) {
+            current = current->next;
+        } else {
+            break;
+        }
+    }
+    return current;
+
+}
+
+node_t* add_next_node(node_t *prev_position, node_t *node) {
+    node_t *temp;
+
+    temp = prev_position->next;
+    prev_position->next = node;
+    node->next = temp;
+
+    return node;
 }
