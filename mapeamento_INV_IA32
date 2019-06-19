@@ -1,0 +1,49 @@
+INVENTADO           IA-32
+ADD   A             ADD EAX <- EAX + A
+SUB   B             SUB EAX <- EAX - B
+MULT  C             MUL EDX.EAX <- EAX*C
+*(DIV   D             DIV  <- EAX*C)
+JMP   E             JMP E
+
+JMPN  F             CMP 0, EAX
+                    JL  F
+
+JMPP  G             CMP EAX, 0
+                    JG  G
+
+JMPZ  H             CMP EAX, 0
+                    JE  H
+
+COPY  I, J          MOV J, I
+LOAD  K             MOV EAX, K
+STORE L             MOV L, EAX
+
+INPUT   M           PUSH M
+                    CALL LerInteiro
+
+OUTPUT  N           PUSH N
+                    CALL EscreverInteiro
+
+C_INPUT     O       PUSH O
+                    CALL LerChar
+
+C_OUTPUT    P       PUSH P
+                    CALL EscreverChar
+
+H_INPUT     Q       PUSH Q
+                    CALL LerHexa
+
+H_OUTPUT    R       PUSH R
+                    CALL EscreverHexa
+
+S_INPUT     S, T    PUSH S
+                    PUSH T
+                    CALL LerString
+
+S_OUTPUT    U, V    PUSH U
+                    PUSH V
+                    CALL EscreverString
+
+STOP                MOV EAX, 1
+                    MOV EBX, 0
+                    int 80h

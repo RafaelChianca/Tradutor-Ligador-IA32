@@ -23,7 +23,7 @@ node_t* initialize_list(node_t *head) {
 void print_list(node_t *head) {
 
     node_t *current = head->next;
-        printf("\nLine\tAddr\tLabel\tOpcode\tOp1\tOp2\tOp3\n");
+        printf("\nLine\tLabel\tOpcode\tOp1\tOp2\tOp3\n");
         while (current != NULL) {
             printf("%d\t", current->count);
             printf("%d\t", current->address);

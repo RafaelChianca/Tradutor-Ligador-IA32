@@ -19,13 +19,6 @@ void mount_program(node_t *head, char *filename) {
     label_head = initialize_list(label_head);
     label_head = make_label_addr_list(label_head, head);
 
-    // temp = strchr(filename, '.');
-    // *temp = '\0';
-    // strcat(filename, ".pre.txt");
-    //
-    // fp = fopen (filename, "w");
-    // pre_processed = fopen("pre_processed.txt", "w");
-
     while(current != NULL) {
         directive_flag = in_vector (current->opcode, directives, 7);
         strcpy(line[0], current->label);
@@ -226,8 +219,8 @@ void write_in_file (node_t *head, char *filename) {
     int i;
 
     strcpy(filename_buffer, filename);
-    temp = strchr(filename_buffer, '.');
-    *temp = '\0';
+    // temp = strchr(filename_buffer, '.');
+    // *temp = '\0';
 
     strcat(filename_buffer, ".obj.txt");
 
