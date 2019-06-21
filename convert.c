@@ -6,12 +6,18 @@
 
 
 node_t* translate(node_t* head) {
-    char *opcode[] = {"ADD","SUB","MULT","DIV","JMP","JMPN","JMPP","JMPZ","COPY","LOAD","STORE","INPUT","OUTPUT","C_INPUT","C_OUTPUT","H_INPUT","H_OUTPUT","S_INPUT","S_OUTPUT","STOP"};
+    char *opcode[] = {"ADD","SUB","MULT","DIV","JMP","JMPN","JMPP","JMPZ","COPY","LOAD","STORE","INPUT","OUTPUT","C_INPUT","C_OUTPUT","H_INPUT","H_OUTPUT","S_INPUT","S_OUTPUT","STOP", "\0"};
+    char *directives[] = {"SECTION", "SPACE", "CONST", "EQU", "IF", "\0"};
     node_t* ia_32_head = initialize_list(ia_32_head);
+    node_t* node;
+    node_t* data_node;
     node_t *current = head->next;
-    int i;
+    int i = 0, j = 0;
         while (current != NULL) {
             i = in_array(current->opcode, opcode);
+            if (i == -1) {
+                j = in_array(current->opcode, directives);
+            }
             if (i != -1) {
                 switch (i) {
                     case 1: /*ADD*/
@@ -85,7 +91,48 @@ node_t* translate(node_t* head) {
                         ia_32_head = add_line(ia_32_head, "", "MOV", "EAX", "1", "", current->count, current->address);
                         ia_32_head = add_line(ia_32_head, "", "MOV", "EBX", "0", "", current->count+1, current->address);
                         ia_32_head = add_line(ia_32_head, "", "INT 80h", "", "", "", current->count+2, current->address);
+                    break;
+                }
+            }
+            else if (j != -1) {
+                switch (j) {
+                    case 1: /*SECTION*/
+                        if(strcmp(current->op1, "TEXT") == 0) {
+                            ia_32_head = add_line(ia_32_head, "", "SECTION", ".TEXT", "", "", current->count, current->address);
+                            ia_32_head = add_line(ia_32_head, "", "_start:", "", "", "", current->count+1, current->address);
 
+                        }
+                        else if(strcmp(current->op1, "DATA") == 0) {
+                            data_node = create_node("", "SECTION", ".DATA", "", "", current->count, current->address);
+                            data_node->next = ia_32_head->next;
+                            ia_32_head->next = data_node;
+
+                        }
+                    break;
+                    case 2: /*SPACE*/
+                        if (strcmp(current->op1, "") != 0) {
+                            j = atoi(current->op1);
+                            memset(current->op1, 0, sizeof(current->op1));
+                            for (int k = 0; k < j; k++) {
+                                strcat(current->op1, "0,");
+                            }
+                            strcpy(current->op1 + (strlen(current->op1)-1), "\0");
+                        } else {
+                            strcpy(current->op1, "0");
+                        }
+                        node = create_node(current->label, "DD", current->op1, "", "", current->count, current->address);
+                        data_node = add_next_node(data_node, node);
+                    break;
+                    case 3: /*CONST*/
+                        node = create_node(current->label, "DD", current->op1, "", "", current->count, current->address);
+                        data_node = add_next_node(data_node, node);
+                    break;
+                    case 4: /*EQU*/
+                        node = create_node(current->label, current->opcode, current->op1, "", "", current->count, current->address);
+                        data_node = add_next_node(data_node, node);
+                    break;
+                    case 5: /*IF*/
+                    break;
                 }
             }
 

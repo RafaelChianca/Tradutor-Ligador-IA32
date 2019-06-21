@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
     write_in_file(head, argv[1]);
     ia_32_head = translate(head);
 
+    delete_list(ia_32_head);
     delete_list(head);
 
     return 0;

@@ -20,6 +20,20 @@ node_t* initialize_list(node_t *head) {
     return head;
 }
 
+node_t* create_node(char *label ,char *opcode, char *op1, char *op2, char *op3, int count, int address){
+    node_t* node = (node_t *)malloc(sizeof(node_t));
+    strcpy(node->label, label);
+    strcpy(node->opcode, opcode);
+    strcpy(node->op1, op1);
+    strcpy(node->op2, op2);
+    strcpy(node->op3, op3);
+    node->count = count;
+    node->address = address;
+
+    node->next = NULL;
+    return node;
+}
+
 void print_list(node_t *head) {
 
     node_t *current = head->next;
@@ -55,6 +69,7 @@ node_t* add_line(node_t *head, char *label ,char *opcode, char *op1, char *op2, 
 
     return head;
 }
+
 
 node_t* delete_node(node_t* head, int line) {
     node_t * current = head->next;

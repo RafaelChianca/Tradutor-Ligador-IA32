@@ -228,6 +228,7 @@ void write_in_file (node_t *head, char *filename) {
 
     if (fp != NULL) {
         while (current != NULL) {
+            fprintf(fp, "%s\t", current->label);
             fprintf(fp, "%s\t", current->opcode);
             fprintf(fp, "%s\t", current->op1);
             fprintf(fp, "%s\t", current->op2);
