@@ -17,7 +17,6 @@ int main(int argc, char *argv[]) {
     // mount_program(head, argv[1]);
     write_in_file(head, argv[1]);
     ia_32_head = translate(head);
-
     delete_list(ia_32_head);
     delete_list(head);
 

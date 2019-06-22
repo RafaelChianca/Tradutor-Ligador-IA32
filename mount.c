@@ -20,7 +20,7 @@ void mount_program(node_t *head, char *filename) {
     label_head = make_label_addr_list(label_head, head);
 
     while(current != NULL) {
-        directive_flag = in_vector (current->opcode, directives, 7);
+        directive_flag = in_vector(current->opcode, directives, 7);
         strcpy(line[0], current->label);
 
         /*IT'S NOT EMPTY AND IT'S NOT A DIRECTIVE*/
@@ -219,16 +219,19 @@ void write_in_file (node_t *head, char *filename) {
     int i;
 
     strcpy(filename_buffer, filename);
-    // temp = strchr(filename_buffer, '.');
-    // *temp = '\0';
 
-    strcat(filename_buffer, ".obj.txt");
+    strcat(filename_buffer, ".s.txt");
 
     fp = fopen (filename_buffer, "w");
 
     if (fp != NULL) {
         while (current != NULL) {
-            fprintf(fp, "%s\t", current->label);
+            if(strcmp(current->label, "") != 0) {
+                fprintf(fp, "%s:\t", current->label);
+            }
+            else {
+                fprintf(fp, "\t");
+            }
             fprintf(fp, "%s\t", current->opcode);
             fprintf(fp, "%s\t", current->op1);
             fprintf(fp, "%s\t", current->op2);
