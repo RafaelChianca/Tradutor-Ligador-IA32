@@ -176,7 +176,6 @@ node_t* translate(node_t* head) {
 
             current = current->next;
         }
-        writeFile(ia_32_head, "ia_32");
         return ia_32_head;
 }
 

@@ -1,0 +1,49 @@
+EscreverString:  enter 0,0
+  mov dword ebx, [ebp+12] ;copia o endereço para ebx
+  mov dword ecx, [ebp+8] ;copia o tamanho máximo
+  push dword 0	;Bota 0 no contador de caracteres impressos
+loop3:
+  push ecx ;salva o contador
+  push ebx ;salva o endereço
+  push ebx ;endereço que está o char
+  call EscreverCharSemEnter
+  pop ebx ;recupera o endereço
+  pop ecx ;recupera o contador
+  add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
+  cmp byte [ebx], 0xA
+  je  FimDaString
+  add ebx, 0x1 ; aumenta em 1B
+  loop loop3 ;se não for 0 pula
+  add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
+  call EscreveEnter		  ;Escreve o enter no final da impressão
+
+FimDaString: mov eax, [esp] ;quantidade escrita
+  leave
+  ret 8
+
+  EscreverCharSemEnter: push dword ebp            ;Salva o valor de ebp na pilha
+  mov ebp, esp			  ;Copia o valor da posição de esp para ebp
+  mov eax, [ebp+8]          ;Coloca o conteúdo de ebp+8 em eax (endereço do conteudo a ser impresso)
+  mov edx, 1                ;Quantos caracteres serão impressos
+  mov dword ecx, eax        ;O que será impresso (eax contem o endereço do conteúdo)
+  mov ebx, 1                ;Descritor do arquivo (stdout)
+  mov eax, 4                ;Número de chamada do sistema (sys_write)
+  int 0x80                  ;Chamada do kernel
+  pop dword ebp			  ;Restaura o valor de ebp
+  mov dword eax, 2          ;Retorna a quantidade de caracteres impressos em eax (1 caracter + 0xA)
+  ret 4				      ;desenpilha o retorno para o PC e o argumento (numero que foi impresso)
+
+
+  EscreveEnter: push dword ebp            ;Salva o valor de ebp na pilha
+  mov ebp, esp			  ;Copia o valor da posição de esp para ebp
+  push dword 0xA	  		  ;Bota o caracter 'enter' na pilha (ebp-4)
+  mov dword eax, ebp		  ;Bota o endereço de ebp em eax
+  sub dword eax, 4          ;Posiciona o conteudo de eax para apontar para '0xA' (enter)
+  mov edx, 1                ;Quantos caracteres serão impressos
+  mov dword ecx, eax        ;O que será impresso (eax contem o endereço do conteúdo)
+  mov ebx, 1                ;Descritor do arquivo (stdout)
+  mov eax, 4                ;Número de chamada do sistema (sys_write)
+  int 0x80                  ;Chamada do kernel
+  add dword esp, 4		  ;Desenpilha o '0xA'
+  pop dword ebp			  ;Restaura o valor de ebp
+  ret

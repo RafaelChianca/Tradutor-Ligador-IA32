@@ -8,6 +8,7 @@
   #include <stdlib.h>
   #include <stdio.h>
   #include <string.h>
+  #include <ctype.h>
 #endif
 
 #ifndef LIST_H_
@@ -132,4 +133,50 @@ node_t* addNextNode(node_t *prev_position, node_t *node) {
     node->next = temp;
 
     return node;
+}
+
+void lineToList(char* line, char linebuffer[][MAXCN]) {
+    char cp = line[0];
+    char buffer[MAXCN] = {0};
+    int size, j = 1, x = 0;
+
+    size = strlen(line);
+
+    for (int i = 0; i < size; i++) {
+        if (line[i] == ' ' || line[i] == '\t' || line[i] == '\n') {
+            if(buffer[0] != '\0')
+                strcpy(linebuffer[j], buffer);
+            x = 0;
+            j++;
+            memset(buffer, 0, sizeof(buffer));
+        } else if (line[i] == ':') {
+            j = 0;
+        } else if (line[i] == ',') {
+            continue;
+        } else if (line[i] == ';') {
+            break;
+        } else {
+            buffer[x++] = toupper(line[i]);
+        }
+    }
+}
+
+void read_input_output(node_t* head) {
+    node_t* current = head->next;
+    FILE *fp;
+    char *line;
+    char linebuffer[5][MAXCN] = {{0}};
+    int i;
+    size_t len = 0;
+
+    fp = fopen ("../inputOutputs/LeerInteiro.txt", "r");
+
+    if (fp != NULL) {
+        while ((getline(&line, &len, fp)) != -1) {
+            lineToList(line, linebuffer);
+            addLine(head, linebuffer[0], linebuffer[1], linebuffer[2], linebuffer[3], linebuffer[4], 0, 0);
+
+            memset(linebuffer, 0, sizeof(linebuffer[0][0]) * 5 * MAXCN);
+        }
+    }
 }

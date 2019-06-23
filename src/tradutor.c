@@ -33,6 +33,8 @@ int main(int argc, char *argv[]) {
     readFile(argv[1], head);
     writeFile(head, argv[1]);
     ia_32_head = translate(head);
+    read_input_output(ia_32_head);
+    writeFile(ia_32_head, "ia_32");
     deleteList(ia_32_head);
     deleteList(head);
 

@@ -1,0 +1,33 @@
+EscreverInteiro: push dword ebp            ;Salva o valor de ebp na pilha
+mov ebp, esp			  ;Copia o valor da posição de esp para ebp
+mov eax, [ebp+8]          ;Coloca o conteúdo de ebp+8 em eax (endereço do conteudo a ser impresso)
+mov eax, [eax]            ;Coloca o numero a ser impresso em eax
+sub ebx, ebx              ;Zera o contador ebx
+push dword ebx            ;Bota ebx na pilha (quantidade de elementos que foram impressos)
+cdq                       ;Extende o sinal de eax em edx
+cmp edx, 0                ;Analisa se o número é negativo
+je GetNumPortionToPrint
+xor dword eax, 0xFFFFFFFF ;Faz o 'Ou' exclusivo, removendo o negativo
+add dword eax, 1          ;Soma 1 para ter o numero positivo equivalente ao negativo
+push dword eax            ;Salva o numero transformado em positivo na pilha
+mov dword edx, 45         ;Coloca o '-' no edx
+push dword edx            ;Bota o '-' na pilha
+mov dword eax, ebp        ;Bota o endereço de ebp em eax
+sub dword eax, 12         ;Subtrai 12 de eax, fazendo com que em eax fique o endereço do item '45' (-)
+mov edx, 1                ;Quantos caracteres serão impressos
+mov dword ecx, eax        ;O que será impresso (eax contem o endereço do conteúdo '-')
+mov ebx, 1                ;Descritor do arquivo (stdout)
+mov eax, 4                ;Número de chamada do sistema (sys_write)
+int 0x80                  ;Chamada do kernel
+add dword esp, 4          ;Remove o edx da pilha
+pop dword eax             ;Restaura o valor de eax
+add dword [ebp-4], 1    ;Adiciona 1 no contador de itens impressos
+sub ebx, ebx              ;Zera o contador ebx
+
+GetNumPortionToPrint: add ebx, 4                ;Adiciona em ebx para saber qntos itens irao para a pilha
+mov ecx, 10               ;Coloca 10 no divisor
+cdq                       ;Extende o sinal de eax em edx
+div dword ecx             ;Divide o numero por 10
+push dword edx            ;Coloca o remainder na pilha
+cmp eax, 0                ;Verifica se o número já foi colocado na pilha por completo
+jg GetNumPortionToPrint   ;Faz o loop até que todos os digitos estejam na pilha individualmente

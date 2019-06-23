@@ -1,7 +1,5 @@
 section .text
-
-EscreverInteiro:
-push dword ebp            ;Salva o valor de ebp na pilha
+EscreverInteiro: push dword ebp            ;Salva o valor de ebp na pilha
 mov ebp, esp			  ;Copia o valor da posição de esp para ebp
 mov eax, [ebp+8]          ;Coloca o conteúdo de ebp+8 em eax (endereço do conteudo a ser impresso)
 mov eax, [eax]            ;Coloca o numero a ser impresso em eax
@@ -24,18 +22,18 @@ mov eax, 4                ;Número de chamada do sistema (sys_write)
 int 0x80                  ;Chamada do kernel
 add dword esp, 4          ;Remove o edx da pilha
 pop dword eax             ;Restaura o valor de eax
-add dword [ebp - 4], 1    ;Adiciona 1 no contador de itens impressos
+add dword [ebp-4], 1    ;Adiciona 1 no contador de itens impressos
 sub ebx, ebx              ;Zera o contador ebx
-GetNumPortionToPrint:
-add ebx, 4                ;Adiciona em ebx para saber qntos itens irao para a pilha
+
+GetNumPortionToPrint: add ebx, 4                ;Adiciona em ebx para saber qntos itens irao para a pilha
 mov ecx, 10               ;Coloca 10 no divisor
 cdq                       ;Extende o sinal de eax em edx
 div dword ecx             ;Divide o numero por 10
 push dword edx            ;Coloca o remainder na pilha
 cmp eax, 0                ;Verifica se o número já foi colocado na pilha por completo
 jg GetNumPortionToPrint   ;Faz o loop até que todos os digitos estejam na pilha individualmente
-printNumberByNumber:
-add dword [ebp - 4], 1    ;Adiciona 1 no contador de itens impressos
+
+printNumberByNumber: add dword [ebp - 4], 1    ;Adiciona 1 no contador de itens impressos
 sub dword ebx, 4          ;Subtrai 4 do contador (4 bytes)
 pop dword eax             ;Pega o primeiro item a ser impresso
 push dword ebx            ;Salva o contador na pilha
@@ -56,8 +54,7 @@ add dword eax, 1		  ;Soma o '0xA' que foi impresso no final
 pop dword ebp			  ;Restaura o valor de ebp
 ret 4				      ;desenpilha o retorno para o PC e o argumento (numero que foi impresso)
 
-EscreverChar:
-push dword ebp            ;Salva o valor de ebp na pilha
+EscreverChar: push dword ebp            ;Salva o valor de ebp na pilha
 mov ebp, esp			  ;Copia o valor da posição de esp para ebp
 mov eax, [ebp+8]          ;Coloca o conteúdo de ebp+8 em eax (endereço do conteudo a ser impresso)
 mov edx, 1                ;Quantos caracteres serão impressos
@@ -70,8 +67,8 @@ pop dword ebp			  ;Restaura o valor de ebp
 mov dword eax, 2          ;Retorna a quantidade de caracteres impressos em eax (1 caracter + 0xA)
 ret 4				      ;desenpilha o retorno para o PC e o argumento (numero que foi impresso)
 
-EscreverCharSemEnter:
-push dword ebp            ;Salva o valor de ebp na pilha
+
+EscreverCharSemEnter: push dword ebp            ;Salva o valor de ebp na pilha
 mov ebp, esp			  ;Copia o valor da posição de esp para ebp
 mov eax, [ebp+8]          ;Coloca o conteúdo de ebp+8 em eax (endereço do conteudo a ser impresso)
 mov edx, 1                ;Quantos caracteres serão impressos
@@ -83,8 +80,8 @@ pop dword ebp			  ;Restaura o valor de ebp
 mov dword eax, 2          ;Retorna a quantidade de caracteres impressos em eax (1 caracter + 0xA)
 ret 4				      ;desenpilha o retorno para o PC e o argumento (numero que foi impresso)
 
-EscreveEnter:
-push dword ebp            ;Salva o valor de ebp na pilha
+
+EscreveEnter: push dword ebp            ;Salva o valor de ebp na pilha
 mov ebp, esp			  ;Copia o valor da posição de esp para ebp
 push dword 0xA	  		  ;Bota o caracter 'enter' na pilha (ebp-4)
 mov dword eax, ebp		  ;Bota o endereço de ebp em eax
@@ -98,8 +95,8 @@ add dword esp, 4		  ;Desenpilha o '0xA'
 pop dword ebp			  ;Restaura o valor de ebp
 ret
 
-EscreverString:
-  enter 0,0
+
+EscreverString:  enter 0,0
   mov dword ebx, [ebp+12] ;copia o endereço para ebx
   mov dword ecx, [ebp+8] ;copia o tamanho máximo
   push dword 0	;Bota 0 no contador de caracteres impressos
@@ -117,14 +114,14 @@ loop3:
   loop loop3 ;se não for 0 pula
   add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
   call EscreveEnter		  ;Escreve o enter no final da impressão
-FimDaString:
-  mov eax, [esp] ;quantidade escrita
+
+FimDaString: mov eax, [esp] ;quantidade escrita
   leave
   ret 8
 
 
-LeerInteiro:
-push dword ebp      ;Salva o valor de ebp na pilha
+
+LeerInteiro: push dword ebp      ;Salva o valor de ebp na pilha
 mov ebp, esp	    ;Copia o valor da posição de esp para ebp
 push dword 0        ;Reserva espaço na pilha para o contador de caracteres lidos (ebp-4)
 push dword 0        ;Reserva na pilha espaço para a flag se o número é negativo (0 - positivo, 1 - negativo) (ebp-8)
@@ -139,8 +136,8 @@ jne LeituraInteiroLoop
 mov dword [ebp-8], 1  ;Número negativo
 add dword esp, 4      ;Remove o caracter '-' da pilha
 sub dword [ebp-4], 1  ;Remove do contador de caracteres lido o '-' (para evitar problemas no loop TransformaEmInteiro, é readicionado essa quantidade futuramente)
-LeituraInteiroLoop:   ;Loop para ler o inteiro até o enter
-mov dword eax, esp  ;Bota em eax o endereço de esp
+  ;Loop para ler o inteiro até o enter
+LeituraInteiroLoop: mov dword eax, esp  ;Bota em eax o endereço de esp
 sub dword eax, 4    ;Posiciona eax para a próxima posição da pilha
 push dword 0        ;Bota zero no conteudo da pilha esp-4
 push dword eax      ;bota na pilha o endereço da próxima posição (que é exatamente esp-4), em esp-8
@@ -154,8 +151,8 @@ mov dword ecx, [ebp-4]  ;Bota em ecx a quantidade de caracteres lido
 sub dword ecx, 1      ;Remove o 'enter' lido
 mov dword edx, [ebp + 8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
 mov dword [edx], 0 ;Bota ZERO no conteudo da variavel que será colocado a leitura do inteiro
-TransformaEmInteiro:
-pop dword ebx       ;Bota o caracter lido em ebx (do último para o primeiro)
+
+TransformaEmInteiro: pop dword ebx       ;Bota o caracter lido em ebx (do último para o primeiro)
 sub dword ecx, 1    ;Subtrai 1 do contador de inteiros
 sub dword ebx, 0x30 ;Transforma de char em numero
 push dword eax      ;Salva o conteudo de eax na pilha
@@ -173,20 +170,19 @@ add dword [ebp-4], 1  ;Adiciona o '-' como caracter lido
 mov dword edx, [ebp + 8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
 sub dword [edx], 1  ;Subtrai 1 do numero inteiro
 xor dword [edx], 0xFFFFFFFF ;Faz o 'Ou' exclusivo, adicionando o negativo
-FimLeituraInteiro:
-mov dword eax, [ebp-4]    ;Bota em eax a quantidade de caracteres lidos
+
+FimLeituraInteiro: mov dword eax, [ebp-4]    ;Bota em eax a quantidade de caracteres lidos
 mov dword esp, ebp    ;Apaga todos os itens da pilha
 pop dword ebp       ;Restaura o valor de ebp
 ret 4
 
 
-LerHexa:
-enter 4,0
+
+LerHexa: enter 4,0
 mov dword [ebp-4], 0; zera o contador
 mov dword ebx, [ebp+12]; copia o endereço para ebx
 mov dword ecx, [ebp+8]; copia o tamanho máximo
-loop2:
-push ecx ;salva o tamanho máximo
+loop2: push ecx ;salva o tamanho máximo
 push ebx ;salva o endereço
 push ebx ;endereço de retorno do char
 call LeerChar
@@ -198,15 +194,14 @@ je retorno2
 add dword ebx, 0x1 ;aumenta o endereço em 1B
 cmp dword [ebp-4], ecx ;limite máximo estabelecido pelo usuário
 jb loop2
-retorno2:
-mov eax, dword[ebp-4] ; move a quantidade lida para eax
+retorno2: mov eax, dword[ebp-4] ; move a quantidade lida para eax
 leave
 ret 8 ;elimina o endereço que foi gravado da pilha
 
 
 
-LeerChar:
-push dword ebp      ;Salva o valor de ebp na pilha
+
+LeerChar: push dword ebp      ;Salva o valor de ebp na pilha
 mov ebp, esp	    ;Copia o valor da posição de esp para ebp
 mov edx, 1          ;Quantos caracteres serão lidos
 mov ecx, [ebp + 8]  ;O endereço de onde será escrito o caracter digitado
@@ -217,13 +212,12 @@ pop dword ebp       ;Restaura o valor de ebp
 mov dword eax, 1    ;Bota em eax a quantidade de caracteres lidos
 ret 4
 
-LeerString:
-  enter 4,0
+
+LeerString:  enter 4,0
   mov dword [ebp-4], 0 ; zera o contador
   mov dword ebx, [ebp+12] ;copia o endereço para ebx
   mov dword ecx, [ebp+8] ;copia o tamanho máximo
-loop2:
-  push ecx ;salva o tamanho máximo
+loop2: push ecx ;salva o tamanho máximo
   push ebx ;salva o endereço
   push ebx ;endereço de retorno do char
   call LeerChar
@@ -235,7 +229,6 @@ loop2:
   add dword ebx, 0x1 ;aumenta o endereço em 1B
   cmp dword [ebp-4], ecx ;limite máximo estabelecido pelo usuário
   jb loop2
-retorno2:
-  mov eax, dword[ebp-4] ; move a quantidade lida para eax
+retorno2: mov eax, dword[ebp-4] ; move a quantidade lida para eax
   leave
   ret 8 ;elimina o endereço que foi gravado da pilha
