@@ -16,7 +16,7 @@
 #endif
 
 
-void mount_program(node_t *head, char *filename) {
+void mountProgram(node_t *head, char *filename) {
     node_t *label_head;
     char *directives[] = {"SECTION", "CONST", "EQU", "IF", "MACRO", "END", "SPACE"};
     char addr[MAXCN], opcode_buffer[MAXCN], buffer[MAXCN];
@@ -27,8 +27,8 @@ void mount_program(node_t *head, char *filename) {
     FILE *fp, *pre_processed;
     char *temp;
 
-    label_head = initialize_list(label_head);
-    label_head = make_label_addr_list(label_head, head);
+    label_head = initializeList(label_head);
+    label_head = makeLabelAddrList(label_head, head);
 
     while(current != NULL) {
         directive_flag = inVector(current->opcode, directives, 7);
@@ -36,13 +36,13 @@ void mount_program(node_t *head, char *filename) {
 
         /*IT'S NOT EMPTY AND IT'S NOT A DIRECTIVE*/
         if (current->op1 && !directive_flag) {
-            label_flag = is_label_in_list(current->op1, label_head, 0);
+            label_flag = isLabelInList(current->op1, label_head, 0);
 
             count = current->count;
 
             /*CASE COPY*/
             if (current->op2) {
-                op2_flag = is_label_in_list(current->op2, label_head, 0);
+                op2_flag = isLabelInList(current->op2, label_head, 0);
                 if (op2_flag != -1) {
                     strcpy(line[2], current->op1);
                     strcpy(line[3], current->op2);
@@ -61,7 +61,7 @@ void mount_program(node_t *head, char *filename) {
                 memset(current->op1, 0, sizeof(current->op1));
                 strcpy(current->op1, addr);
             }
-            opcode_value = get_opcode(current->opcode);
+            opcode_value = getOpcode(current->opcode);
             // TRADES OPCODE FOR ITS VALUE
             if (opcode_value != -1) {
                 strcpy(line[0], current->label);
@@ -93,18 +93,18 @@ void mount_program(node_t *head, char *filename) {
         /*CASE END*/
         else if (strcmp(current->opcode, "END") == 0) {
             count = current->count;
-            current = delete_node(head, current->count);
+            current = deleteNode(head, current->count);
         }
         else if (current->op1 && directive_flag) {
             /* CASE IF */
             count = current->count;
             if (strcmp(current->opcode, "IF") == 0) {
-                label_flag = is_label_in_list(current->op1, label_head, 1);
+                label_flag = isLabelInList(current->op1, label_head, 1);
                 /* DELETE IF LINE*/
-                current = delete_node(head, current->count);
+                current = deleteNode(head, current->count);
                 if (label_flag == 0) {
                     /* DELETE NEXT LINE */
-                    current = delete_node(head, current->next->count);
+                    current = deleteNode(head, current->next->count);
                 }
             }
             /*CASE CONST*/
@@ -120,14 +120,14 @@ void mount_program(node_t *head, char *filename) {
             /*CASE EQU AND SECTION*/
             else if (strcmp(current->opcode, "EQU") == 0) {
                 count = current->count;
-                current = delete_node(head, current->count);
+                current = deleteNode(head, current->count);
             }
             else if (strcmp(current->opcode, "SECTION") == 0) {
                 strcpy(line[0], current->opcode);
                 strcpy(line[1], current->op1);
                 strcpy(line[2], current->op2);
                 count = current->count;
-                current = delete_node(head, current->count);
+                current = deleteNode(head, current->count);
             }
         }
 
@@ -138,13 +138,13 @@ void mount_program(node_t *head, char *filename) {
         current = current->next;
     }
 
-    delete_list(label_head);
+    deleteList(label_head);
 
 }
 
 
 /*CHECK IF LABEL WAS DEFINED*/
-int is_label_in_list(char* label, node_t* head, int case_if) {
+int isLabelInList(char* label, node_t* head, int case_if) {
     node_t *current = head->next;
     while(current != NULL) {
         /*FOUND LABEL DEFINITION -> RETURN ITS ADDRS*/
@@ -161,20 +161,20 @@ int is_label_in_list(char* label, node_t* head, int case_if) {
     return -1;
 }
 
-node_t* make_label_addr_list(node_t* label_head, node_t* head) {
+node_t* makeLabelAddrList(node_t* label_head, node_t* head) {
     node_t *current = head->next;
 
     while(current != NULL) {
         /*FOUND LABEL IN CODE*/
         if(current->label[0] != '\0' && strcmp(current->label, "00") != 0) {
-            label_head = add_line(label_head, current->label, current->opcode, current->op1, current->op2, current->op3, current->count, current->address);
+            label_head = addLine(label_head, current->label, current->opcode, current->op1, current->op2, current->op3, current->count, current->address);
         }
         current = current->next;
     }
     return label_head;
 }
 
-int get_opcode (char *mneumonic) {
+int getOpcode (char *mneumonic) {
     char *opcode[] = {"ADD","SUB","MULT","DIV","JMP","JMPN","JMPP","JMPZ","COPY","LOAD","STORE","INPUT","OUTPUT","STOP","C_INPUT","C_OUTPUT","H_INPUT","H_OUTPUT","S_INPUT","S_OUTPUT"};
     int i;
 

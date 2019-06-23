@@ -3,8 +3,8 @@
   #include "list.h"
 #endif
 
-void mount_program (node_t *, char *);
-int is_label_in_list (char* , node_t*, int);
-node_t* make_label_addr_list (node_t* , node_t* );
-int get_opcode (char *);
+void mountProgram (node_t *, char *);
+int isLabelInList (char* , node_t*, int);
+node_t* makeLabelAddrList (node_t* , node_t* );
+int getOpcode (char *);
 void writeFile (node_t*, char*);

@@ -100,9 +100,9 @@ void readFile (char *filename, node_t *head) {
             if (!comment_flag && index >= 2) {
                 aux = address_counter;
 
-                syntatic_analyzer(line, &address_counter);
+                syntaticAnalyzer(line, &address_counter);
 
-                head = add_line(head, line[0], line[1], line[2], line[3], line[4], line_counter, aux);
+                head = addLine(head, line[0], line[1], line[2], line[3], line[4], line_counter, aux);
 
                 memset(line, 0, sizeof(line[0][0]) * 5 * MAXCN);
                 index = 1;

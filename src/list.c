@@ -15,7 +15,7 @@
   #include "list.h"
 #endif
 
-node_t* initialize_list(node_t *head) {
+node_t* initializeList(node_t *head) {
 
     head = (node_t *)malloc(sizeof(node_t));
 
@@ -31,7 +31,7 @@ node_t* initialize_list(node_t *head) {
     return head;
 }
 
-node_t* create_node(char *label ,char *opcode, char *op1, char *op2, char *op3, int count, int address){
+node_t* createNode(char *label ,char *opcode, char *op1, char *op2, char *op3, int count, int address){
     node_t* node = (node_t *)malloc(sizeof(node_t));
     strcpy(node->label, label);
     strcpy(node->opcode, opcode);
@@ -45,7 +45,7 @@ node_t* create_node(char *label ,char *opcode, char *op1, char *op2, char *op3, 
     return node;
 }
 
-void print_list(node_t *head) {
+void printList(node_t *head) {
 
     node_t *current = head->next;
         printf("\nLine\tLabel\tOpcode\tOp1\tOp2\tOp3\n");
@@ -62,7 +62,7 @@ void print_list(node_t *head) {
 
 }
 
-node_t* add_line(node_t *head, char *label ,char *opcode, char *op1, char *op2, char *op3, int count, int address) {
+node_t* addLine(node_t *head, char *label ,char *opcode, char *op1, char *op2, char *op3, int count, int address) {
     node_t * current = head;
     while (current->next != NULL) {
         current = current->next;
@@ -82,7 +82,7 @@ node_t* add_line(node_t *head, char *label ,char *opcode, char *op1, char *op2, 
 }
 
 
-node_t* delete_node(node_t* head, int line) {
+node_t* deleteNode(node_t* head, int line) {
     node_t * current = head->next;
     node_t * previous = head;
 
@@ -100,7 +100,7 @@ node_t* delete_node(node_t* head, int line) {
 
 }
 
-void delete_list(node_t * head)  {
+void deleteList(node_t * head)  {
     node_t* current = head;
     node_t* next;
 
@@ -111,7 +111,7 @@ void delete_list(node_t * head)  {
     }
 }
 
-node_t* in_list(char *needle, node_t *haystack) {
+node_t* inList(char *needle, node_t *haystack) {
     node_t* current = haystack->next;
     while (current != NULL) {
         if (strcmp(current->label, needle) != 0) {
@@ -124,7 +124,7 @@ node_t* in_list(char *needle, node_t *haystack) {
 
 }
 
-node_t* add_next_node(node_t *prev_position, node_t *node) {
+node_t* addNextNode(node_t *prev_position, node_t *node) {
     node_t *temp;
 
     temp = prev_position->next;

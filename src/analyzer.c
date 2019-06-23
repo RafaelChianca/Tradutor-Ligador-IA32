@@ -16,7 +16,7 @@
   #include "analyzer.h"
 #endif
 
-void syntatic_analyzer(char line[][MAXCN], int *address_counter) {
+void syntaticAnalyzer(char line[][MAXCN], int *address_counter) {
     int i, opcode_flag = 0, directive_flag = 0, dif_directive_flag = 0, op_int = 0;
     int all_opcodes = 0;
     char *opcode[] = {"ADD","SUB","MULT","DIV","JMP","JMPN","JMPP","JMPZ","LOAD","STORE","INPUT","OUTPUT","C_INPUT","C_OUTPUT","H_INPUT","H_OUTPUT","STOP","COPY","S_INPUT","S_OUTPUT"};

@@ -29,12 +29,12 @@ int main(int argc, char *argv[]) {
 
     node_t *head, *ia_32_head;
 
-    head = initialize_list(head);
+    head = initializeList(head);
     readFile(argv[1], head);
     writeFile(head, argv[1]);
     ia_32_head = translate(head);
-    delete_list(ia_32_head);
-    delete_list(head);
+    deleteList(ia_32_head);
+    deleteList(head);
 
     return 0;
 }
