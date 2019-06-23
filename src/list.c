@@ -1,8 +1,19 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include "list.h"
+// #include <stdlib.h>
+// #include <stdio.h>
+// #include <string.h>
+// #include "list.h"
 
+#ifndef COMMON_H_
+  #define COMMON_H_
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <string.h>
+#endif
+
+#ifndef LIST_H_
+  #define LIST_H_
+  #include "list.h"
+#endif
 
 node_t* initialize_list(node_t *head) {
 

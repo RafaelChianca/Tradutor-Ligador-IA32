@@ -1,0 +1,28 @@
+	SECTION	.DATA			
+B:	DD	0,0,0,0			
+H:	DD	0			
+R:	DD	0			
+DOIS:	DD	2			
+	SECTION	.TEXT			
+	_start:				
+	PUSH DWORD	EAX			
+	PUSH DWORD	B			
+	CALL	LeerInteiro			
+	POP DWORD	EAX			
+	PUSH DWORD	EAX			
+	PUSH DWORD	H			
+	CALL	LeerInteiro			
+	POP DWORD	EAX			
+	MOV DWORD	EAX,	B		
+	IMUL DWORD	H			
+	CMP	TRIANGULO,	1		
+	JNE	JUMP			
+	IDIV DWORD	DOIS			
+JUMP:	MOV DWORD	R,	EAX		
+	PUSH DWORD	EAX			
+	PUSH DWORD	R			
+	CALL	EscreverInteiro			
+	POP DWORD	EAX			
+	MOV	EAX,	1		
+	MOV	EBX,	0		
+	INT 80h				

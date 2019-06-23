@@ -1,9 +1,17 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include "convert.h"
-
+#ifndef COMMON_H_
+  #define COMMON_H_
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <string.h>
+#endif
+#ifndef CONVERT_H_
+  #define CONVERT_H_
+  #include "convert.h"
+#endif
+#ifndef MOUNT_H_
+  #define MOUNT_H_
+  #include "mount.h"
+#endif
 
 node_t* translate(node_t* head) {
     char *opcode[] = {"ADD","SUB","MULT","DIV","JMP","JMPN","JMPP","JMPZ","COPY","LOAD","STORE","INPUT","OUTPUT","C_INPUT","C_OUTPUT","H_INPUT","H_OUTPUT","S_INPUT","S_OUTPUT","STOP", "\0"};
@@ -168,7 +176,7 @@ node_t* translate(node_t* head) {
 
             current = current->next;
         }
-        write_in_file(ia_32_head, "ia_32");
+        writeFile(ia_32_head, "ia_32");
         return ia_32_head;
 }
 

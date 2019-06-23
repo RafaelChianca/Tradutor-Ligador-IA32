@@ -1,8 +1,19 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include "mount.h"
+#ifndef COMMON_H_
+  #define COMMON_H_
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <string.h>
+#endif
+
+#ifndef MOUNT_H_
+  #define MOUNT_H_
+  #include "mount.h"
+#endif
+
+#ifndef ANALYZER_H_
+  #define ANALYZER_H_
+  #include "analyzer.h"
+#endif
 
 
 void mount_program(node_t *head, char *filename) {
@@ -20,7 +31,7 @@ void mount_program(node_t *head, char *filename) {
     label_head = make_label_addr_list(label_head, head);
 
     while(current != NULL) {
-        directive_flag = in_vector(current->opcode, directives, 7);
+        directive_flag = inVector(current->opcode, directives, 7);
         strcpy(line[0], current->label);
 
         /*IT'S NOT EMPTY AND IT'S NOT A DIRECTIVE*/
@@ -120,29 +131,6 @@ void mount_program(node_t *head, char *filename) {
             }
         }
 
-        // if (fp != NULL) {
-        //     if (line[1][0] != '\0') {
-        //         if (fp != NULL) {
-        //             fprintf(pre_processed, "%d\t", count);
-        //         }
-        //         for (i = 0; i < 5; i++) {
-        //             fprintf(fp, "%s\t", line[i]);
-        //             if (fp != NULL) {
-        //                 if (line[i][0] == '\0') {
-        //                     fprintf(pre_processed, "00\t");
-        //                 }
-        //                 else {
-        //                     fprintf(pre_processed, "%s\t", line[i]);
-        //                 }
-        //             }
-        //
-        //         }
-        //             fprintf(fp, "\n");
-        //             fprintf(pre_processed, "\n");
-        //
-        //     }
-        // }
-
         count = 0;
         memset(current->label, 0, sizeof(current->label));
         memset(line, 0, sizeof(line[0][0]) * 5 * MAXCN);
@@ -151,9 +139,6 @@ void mount_program(node_t *head, char *filename) {
     }
 
     delete_list(label_head);
-
-    // fclose(fp);
-    // fclose(pre_processed);
 
 }
 
@@ -189,15 +174,6 @@ node_t* make_label_addr_list(node_t* label_head, node_t* head) {
     return label_head;
 }
 
-bool is_numeric (const char *s) {
-    char * p;
-    if (s == NULL || *s == '\0' || isspace(*s)) {
-        return 0;
-    }
-    strtod (s, &p);
-    return *p == '\0';
-}
-
 int get_opcode (char *mneumonic) {
     char *opcode[] = {"ADD","SUB","MULT","DIV","JMP","JMPN","JMPP","JMPZ","COPY","LOAD","STORE","INPUT","OUTPUT","STOP","C_INPUT","C_OUTPUT","H_INPUT","H_OUTPUT","S_INPUT","S_OUTPUT"};
     int i;
@@ -212,7 +188,7 @@ int get_opcode (char *mneumonic) {
 
 }
 
-void write_in_file (node_t *head, char *filename) {
+void writeFile (node_t *head, char *filename) {
     FILE *fp;
     node_t *current = head->next;
     char *temp, filename_buffer[MAXCN];

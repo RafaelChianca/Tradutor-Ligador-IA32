@@ -1,9 +1,22 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include "read.h"
+#ifndef COMMON_H_
+  #define COMMON_H_
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <string.h>
+  #include <ctype.h>
+#endif
 
-void read_file (char *filename, node_t *head) {
+#ifndef READ_H_
+  #define READ_H_
+  #include "read.h"
+#endif
+
+#ifndef ANALYZER_H_
+  #define ANALYZER_H_
+  #include "analyzer.h"
+#endif
+
+void readFile (char *filename, node_t *head) {
 
     FILE *asm_file;
     int address_counter = 0, aux, line_error = 0;

@@ -1,9 +1,20 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include "analyzer.h"
-#include "mount.h"
+// #include <stdlib.h>
+// #include <stdio.h>
+// #include <string.h>
+// #include <ctype.h>
+// #include "analyzer.h"
+
+#ifndef COMMON_H_
+  #define COMMON_H_
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <string.h>
+#endif
+
+#ifndef ANALYZER_H_
+  #define ANALYZER_H_
+  #include "analyzer.h"
+#endif
 
 void syntatic_analyzer(char line[][MAXCN], int *address_counter) {
     int i, opcode_flag = 0, directive_flag = 0, dif_directive_flag = 0, op_int = 0;
@@ -12,10 +23,10 @@ void syntatic_analyzer(char line[][MAXCN], int *address_counter) {
     char *directives[] = {"SECTION", "CONST", "EQU", "IF"};
     char *dif_directives[] = {"END", "SPACE"};
 
-    all_opcodes = in_vector(line[1], opcode, 20);
-    opcode_flag = in_vector(line[1], opcode, 16);
-    directive_flag = in_vector(line[1], directives, 4);
-    dif_directive_flag = in_vector(line[1], dif_directives, 2);
+    all_opcodes = inVector(line[1], opcode, 20);
+    opcode_flag = inVector(line[1], opcode, 16);
+    directive_flag = inVector(line[1], directives, 4);
+    dif_directive_flag = inVector(line[1], dif_directives, 2);
 
 
     /* ALL OPCODES EXCEPT COPY AND STOP */
@@ -54,7 +65,7 @@ void syntatic_analyzer(char line[][MAXCN], int *address_counter) {
     }
 }
 
-bool in_vector(char *needle, char *haystack[], int size) {
+bool inVector(char *needle, char *haystack[], int size) {
     int i;
     for (i = 0; i < size; i++) {
         if(strcmp(haystack[i], needle) == 0) {
