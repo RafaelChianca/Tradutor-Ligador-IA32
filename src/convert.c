@@ -13,12 +13,11 @@
   #include "mount.h"
 #endif
 
-node_t* translate(node_t* head) {
+node_t* translate(node_t* head, node_t* ia_32_head) {
     char *opcode[] = {"ADD","SUB","MULT","DIV","JMP","JMPN","JMPP","JMPZ","COPY","LOAD","STORE","INPUT","OUTPUT","C_INPUT","C_OUTPUT","H_INPUT","H_OUTPUT","S_INPUT","S_OUTPUT","STOP", "\0"};
     char *directives[] = {"SECTION", "SPACE", "CONST", "EQU", "IF", "\0"};
-    node_t* ia_32_head = initializeList(ia_32_head);
     node_t* node;
-    node_t* data_node;
+    node_t* data_node = NULL;
     node_t *current = head->next;
     int i = 0, j = 0;
         while (current != NULL) {
@@ -39,7 +38,6 @@ node_t* translate(node_t* head) {
                     break;
                     case 4: /*DIV*/
                         ia_32_head = addLine(ia_32_head, current->label, "IDIV DWORD", current->op1, "", "", current->count, current->address);
-
                     break;
                     case 5: /*JMP*/
                         ia_32_head = addLine(ia_32_head, current->label, "JMP", current->op1, "", "", current->count, current->address);
@@ -114,7 +112,6 @@ node_t* translate(node_t* head) {
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op2, "", "", current->count+2, current->address);
                         ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverString", "", "", current->count+3, current->address);
                         ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+4, current->address);
-
                     break;
                     case 20: /*STOP*/
                         ia_32_head = addLine(ia_32_head, "", "MOV", "EAX,", "1", "", current->count, current->address);
@@ -132,10 +129,11 @@ node_t* translate(node_t* head) {
 
                         }
                         else if(strcmp(current->op1, "DATA") == 0) {
-                            data_node = createNode("", "SECTION", ".DATA", "", "", current->count, current->address);
-                            data_node->next = ia_32_head->next;
-                            ia_32_head->next = data_node;
-
+                            if (data_node == NULL) {
+                                data_node = createNode("", "SECTION", ".DATA", "", "", current->count, current->address);
+                                data_node->next = ia_32_head->next;
+                                ia_32_head->next = data_node;
+                            }
                         }
                     break;
                     case 2: /*SPACE*/
@@ -151,14 +149,22 @@ node_t* translate(node_t* head) {
                         }
                         node = createNode(current->label, "DD", current->op1, "", "", current->count, current->address);
                         data_node = addNextNode(data_node, node);
+
                     break;
                     case 3: /*CONST*/
                         node = createNode(current->label, "DD", current->op1, "", "", current->count, current->address);
                         data_node = addNextNode(data_node, node);
+
                     break;
                     case 4: /*EQU*/
                         node = createNode(current->label, current->opcode, current->op1, "", "", current->count, current->address);
+                        if (data_node == NULL) {
+                            data_node = createNode("", "SECTION", ".DATA", "", "", current->count, current->address);
+                            data_node->next = ia_32_head->next;
+                            ia_32_head->next = data_node;
+                        }
                         data_node = addNextNode(data_node, node);
+
                     break;
                     case 5: /*IF*/
                         strcat(current->op1, ",");
@@ -173,7 +179,6 @@ node_t* translate(node_t* head) {
                     break;
                 }
             }
-
             current = current->next;
         }
         return ia_32_head;

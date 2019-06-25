@@ -30,13 +30,13 @@ int main(int argc, char *argv[]) {
     node_t *head, *ia_32_head;
 
     head = initializeList(head);
+    ia_32_head = initializeList(ia_32_head);
     readFile(argv[1], head);
-    writeFile(head, argv[1]);
-    ia_32_head = translate(head);
+    ia_32_head = translate(head, ia_32_head);
+    deleteList(head);
     read_input_output(ia_32_head);
     writeFile(ia_32_head, "ia_32");
     deleteList(ia_32_head);
-    deleteList(head);
 
     return 0;
 }

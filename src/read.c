@@ -28,7 +28,7 @@ void readFile (char *filename, node_t *head) {
 
     /* OPEN AND VALIDADE asm_file*/
     if ((asm_file = fopen(filename, "r")) == NULL) {
-        printf("Unable to open asm file.\n");
+        ("Unable to open asm file.\n");
         exit(0);
     }
 

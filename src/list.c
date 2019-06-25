@@ -21,7 +21,7 @@ node_t* initializeList(node_t *head) {
     head = (node_t *)malloc(sizeof(node_t));
 
     if (head == NULL) {
-        printf("Unable to create list.\n");
+        ("Unable to create list.\n");
         exit(1);
     }
 
@@ -47,17 +47,16 @@ node_t* createNode(char *label ,char *opcode, char *op1, char *op2, char *op3, i
 }
 
 void printList(node_t *head) {
-
+    ("\nLine\tLabel\tOpcode\tOp1\tOp2\tOp3\n");
     node_t *current = head->next;
-        printf("\nLine\tLabel\tOpcode\tOp1\tOp2\tOp3\n");
         while (current != NULL) {
-            printf("%d\t", current->count);
-            printf("%d\t", current->address);
-            printf("%s\t", current->label);
-            printf("%s\t", current->opcode);
-            printf("%s\t", current->op1);
-            printf("%s\t", current->op2);
-            printf("%s\t", current->op3);
+            ("%d\t", current->count);
+            ("%d\t", current->address);
+            ("%s\t", current->label);
+            ("%s\t", current->opcode);
+            ("%s\t", current->op1);
+            ("%s\t", current->op2);
+            ("%s\t", current->op3);
             current = current->next;
         }
 
@@ -161,8 +160,8 @@ void lineToList(char* line, char linebuffer[][MAXCN]) {
     }
 }
 
-void read_input_output(node_t* head) {
-    node_t* current = head->next;
+void read_input_output(node_t* ia_32_head) {
+    node_t* current = ia_32_head->next;
     FILE *fp;
     char *line;
     char linebuffer[5][MAXCN] = {{0}};
@@ -172,11 +171,14 @@ void read_input_output(node_t* head) {
     fp = fopen ("../inputOutputs/LeerInteiro.txt", "r");
 
     if (fp != NULL) {
+
         while ((getline(&line, &len, fp)) != -1) {
             lineToList(line, linebuffer);
-            addLine(head, linebuffer[0], linebuffer[1], linebuffer[2], linebuffer[3], linebuffer[4], 0, 0);
+            ia_32_head = addLine(ia_32_head, linebuffer[0], linebuffer[1], linebuffer[2], linebuffer[3], linebuffer[4], 0, 0);
 
             memset(linebuffer, 0, sizeof(linebuffer[0][0]) * 5 * MAXCN);
         }
     }
+
+    fclose(fp);
 }
