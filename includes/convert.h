@@ -3,5 +3,5 @@
   #include "list.h"
 #endif
 
-node_t* translate(node_t*, node_t*);
+node_t* translate(node_t*, node_t*, int*);
 int inArray(char *, char *[]);

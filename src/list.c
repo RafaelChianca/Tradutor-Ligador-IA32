@@ -1,8 +1,3 @@
-// #include <stdlib.h>
-// #include <stdio.h>
-// #include <string.h>
-// #include "list.h"
-
 #ifndef COMMON_H_
   #define COMMON_H_
   #include <stdlib.h>
@@ -158,27 +153,4 @@ void lineToList(char* line, char linebuffer[][MAXCN]) {
             buffer[x++] = toupper(line[i]);
         }
     }
-}
-
-void read_input_output(node_t* ia_32_head) {
-    node_t* current = ia_32_head->next;
-    FILE *fp;
-    char *line;
-    char linebuffer[5][MAXCN] = {{0}};
-    int i;
-    size_t len = 0;
-
-    fp = fopen ("../inputOutputs/LeerInteiro.txt", "r");
-
-    if (fp != NULL) {
-
-        while ((getline(&line, &len, fp)) != -1) {
-            lineToList(line, linebuffer);
-            ia_32_head = addLine(ia_32_head, linebuffer[0], linebuffer[1], linebuffer[2], linebuffer[3], linebuffer[4], 0, 0);
-
-            memset(linebuffer, 0, sizeof(linebuffer[0][0]) * 5 * MAXCN);
-        }
-    }
-
-    fclose(fp);
 }

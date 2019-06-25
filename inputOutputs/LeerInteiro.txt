@@ -13,7 +13,7 @@ jne LeituraInteiroLoop
 mov dword [ebp-8], 1  ;Número negativo
 add dword esp, 4      ;Remove o caracter '-' da pilha
 sub dword [ebp-4], 1  ;Remove do contador de caracteres lido o '-' (para evitar problemas no loop TransformaEmInteiro, é readicionado essa quantidade futuramente)
-  ;Loop para ler o inteiro até o enter
+ ;Loop para ler o inteiro até o enter
 LeituraInteiroLoop: mov dword eax, esp  ;Bota em eax o endereço de esp
 sub dword eax, 4    ;Posiciona eax para a próxima posição da pilha
 push dword 0        ;Bota zero no conteudo da pilha esp-4
@@ -26,7 +26,7 @@ add dword esp, 4      ;Remove o enter da pilha
 mov dword eax, 1      ;Coloca 1 no multiplicador numérico
 mov dword ecx, [ebp-4]  ;Bota em ecx a quantidade de caracteres lido
 sub dword ecx, 1      ;Remove o 'enter' lido
-mov dword edx, [ebp + 8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
+mov dword edx, [ebp+8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
 mov dword [edx], 0 ;Bota ZERO no conteudo da variavel que será colocado a leitura do inteiro
 
 TransformaEmInteiro: pop dword ebx       ;Bota o caracter lido em ebx (do último para o primeiro)
@@ -34,7 +34,7 @@ sub dword ecx, 1    ;Subtrai 1 do contador de inteiros
 sub dword ebx, 0x30 ;Transforma de char em numero
 push dword eax      ;Salva o conteudo de eax na pilha
 imul dword ebx      ;Ajusta a posição do caracter no inteiro
-mov dword edx, [ebp + 8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
+mov dword edx, [ebp+8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
 add dword [edx], eax  ;Salva no conteudo da variavel o valor já convertido para inteiro
 pop dword eax     ;Restaura o valor de eax
 mov dword ebx, 10 ;Bota o numero 10 em ebx
@@ -44,7 +44,7 @@ jne TransformaEmInteiro
 cmp dword [ebp-8], 0  ;Verifica se o numero era negativo
 je  FimLeituraInteiro
 add dword [ebp-4], 1  ;Adiciona o '-' como caracter lido
-mov dword edx, [ebp + 8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
+mov dword edx, [ebp+8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
 sub dword [edx], 1  ;Subtrai 1 do numero inteiro
 xor dword [edx], 0xFFFFFFFF ;Faz o 'Ou' exclusivo, adicionando o negativo
 

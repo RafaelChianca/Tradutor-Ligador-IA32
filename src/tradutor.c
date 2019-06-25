@@ -28,14 +28,18 @@
 int main(int argc, char *argv[]) {
 
     node_t *head, *ia_32_head;
+    int inputOutputsFlags[8] = {0};
 
     head = initializeList(head);
     ia_32_head = initializeList(ia_32_head);
-    readFile(argv[1], head);
-    ia_32_head = translate(head, ia_32_head);
-    deleteList(head);
-    read_input_output(ia_32_head);
+
+    readAsmFile(argv[1], head);
+    ia_32_head = translate(head, ia_32_head, inputOutputsFlags);
     writeFile(ia_32_head, "ia_32");
+    deleteList(head);
+
+    read_input_output(ia_32_head, inputOutputsFlags);
+
     deleteList(ia_32_head);
 
     return 0;

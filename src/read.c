@@ -16,7 +16,7 @@
   #include "analyzer.h"
 #endif
 
-void readFile (char *filename, node_t *head) {
+void readAsmFile (char *filename, node_t *head) {
 
     FILE *asm_file;
     int address_counter = 0, aux, line_error = 0;
@@ -114,4 +114,62 @@ void readFile (char *filename, node_t *head) {
         label_flag = 0;
     }
     fclose(asm_file);
+}
+
+void read_input_output(node_t* ia_32_head, int* inputOutputFlags) {
+    node_t* current = ia_32_head->next;
+    FILE *fp, *ia_32_fp;
+    char *line;
+    char *token;
+    char linebuffer[5][MAXCN] = {{0}};
+    int i;
+    size_t len = 0;
+
+    ia_32_fp = fopen("ia_32.s.txt", "a");
+    fputs("\n", ia_32_fp);
+
+    for (i = 0; i < 8; i++) {
+        if (inputOutputFlags[i] == 1) {
+            switch (i) {
+                case 0:
+                    fp = fopen ("../inputOutputs/LeerInteiro.txt", "r");
+                break;
+                case 1:
+                    fp = fopen ("../inputOutputs/EscreverInteiro.txt", "r");
+                break;
+                case 2:
+                    fp = fopen ("../inputOutputs/LeerChar.txt", "r");
+                break;
+                case 3:
+                    fp = fopen ("../inputOutputs/EscreverChar.txt", "r");
+                break;
+                case 4:
+                    fp = fopen ("../inputOutputs/LerHexa.txt", "r");
+                break;
+                case 5:
+                    fp = fopen ("../inputOutputs/EscreverHexa.txt", "r");
+                break;
+                case 6:
+                    fp = fopen ("../inputOutputs/LeerString.txt", "r");
+                break;
+                case 7:
+                    fp = fopen ("../inputOutputs/EscreverString.txt", "r");
+                break;
+            }
+
+            if (fp != NULL && ia_32_fp != NULL) {
+                while ((getline(&line, &len, fp)) != -1) {
+                    token = strtok(line, ";");
+                    if (strcmp(line, "\n") != 0) {
+                        strcat(token, "\n");
+                        fputs(token, ia_32_fp);
+                    }
+                }
+            }
+
+            fclose(fp);
+        }
+    }
+    fclose(ia_32_fp);
+
 }

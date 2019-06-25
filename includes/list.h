@@ -22,5 +22,4 @@ node_t* createNode(char * ,char *, char *, char *, char *, int , int);
 node_t* deleteNode (node_t*, int );
 node_t* inList (char *, node_t *);
 node_t* addNextNode (node_t *, node_t *);
-void read_input_output(node_t*);
 void lineToList(char*, char[][MAXCN]);
