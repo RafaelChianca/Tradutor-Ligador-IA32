@@ -72,6 +72,7 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         ia_32_head = addLine(ia_32_head, "", "CALL", "LeerInteiro", "", "", current->count+2, current->address);
                         ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+3, current->address);
                         inputOutputFlags[0] = 1;
+                        inputOutputFlags[2] = 1;
                     break;
                     case 13: /*OUTPUT*/
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
@@ -99,6 +100,7 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         ia_32_head = addLine(ia_32_head, "", "PUSH", current->op1, "", "", current->count, current->address);
                         ia_32_head = addLine(ia_32_head, "", "CALL", "LerHexa", "", "", current->count+1, current->address);
                         inputOutputFlags[4] = 1;
+                        inputOutputFlags[2] = 1;
                     break;
                     case 17: /*H_OUTPUT*/
                         ia_32_head = addLine(ia_32_head, "", "PUSH", current->op1, "", "", current->count, current->address);
@@ -112,6 +114,7 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         ia_32_head = addLine(ia_32_head, "", "CALL", "LeerString", "", "", current->count+3, current->address);
                         ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+4, current->address);
                         inputOutputFlags[6] = 1;
+                        inputOutputFlags[2] = 1;
                     break;
                     case 19: /*S_OUTPUT*///**********
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
