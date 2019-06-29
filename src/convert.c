@@ -28,15 +28,19 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
             if (i != -1) {
                 switch (i) {
                     case 1: /*ADD*///**********
+                        alterAddressingMode(current->op1);
                         ia_32_head = addLine(ia_32_head, current->label, "ADD DWORD", "EAX,", current->op1, "", current->count, current->address);
                     break;
                     case 2: /*SUB*///**********
+                        alterAddressingMode(current->op1);
                         ia_32_head = addLine(ia_32_head, current->label, "SUB DWORD", "EAX,", current->op1, "", current->count, current->address);
                     break;
                     case 3: /*MULT*///**********
+                        alterAddressingMode(current->op1);
                         ia_32_head = addLine(ia_32_head, current->label, "IMUL DWORD", current->op1, "", "", current->count, current->address);
                     break;
                     case 4: /*DIV*///**********
+                        alterAddressingMode(current->op1);
                         ia_32_head = addLine(ia_32_head, current->label, "IDIV DWORD", current->op1, "", "", current->count, current->address);
                     break;
                     case 5: /*JMP*/
@@ -55,14 +59,18 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         ia_32_head = addLine(ia_32_head, "", "JE", current->op1, "", "", current->count+1, current->address+2);
                     break;
                     case 9: /*COPY*///********** //**********
+                        alterAddressingMode(current->op1);
+                        alterAddressingMode(current->op2);
                         strcat(current->op2, ",");
                         ia_32_head = addLine(ia_32_head, current->label, "MOV DWORD", "EBX,", current->op1, "", current->count, current->address);
                         ia_32_head = addLine(ia_32_head, current->label, "MOV DWORD", current->op2, "EBX", "", current->count, current->address);
                     break;
                     case 10: /*LOAD*///**********
+                        alterAddressingMode(current->op1);
                         ia_32_head = addLine(ia_32_head, current->label, "MOV DWORD", "EAX,", current->op1, "", current->count, current->address);
                     break;
                     case 11: /*STORE*///**********
+                        alterAddressingMode(current->op1);
                         strcat(current->op1, ",");
                         ia_32_head = addLine(ia_32_head, current->label, "MOV DWORD", current->op1, "EAX", "", current->count, current->address);
                     break;
@@ -71,15 +79,15 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op1, "", "", current->count+1, current->address);
                         ia_32_head = addLine(ia_32_head, "", "CALL", "LeerInteiro", "", "", current->count+2, current->address);
                         ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+3, current->address);
-                        inputOutputFlags[0] = 1;
-                        inputOutputFlags[2] = 1;
+                        inputOutputFlags[0] = 1; //LeerInteiro
+                        inputOutputFlags[2] = 1; //LeerChar
                     break;
                     case 13: /*OUTPUT*/
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op1, "", "", current->count+1, current->address);
                         ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverInteiro", "", "", current->count+2, current->address);
                         ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+3, current->address);
-                        inputOutputFlags[1] = 1;
+                        inputOutputFlags[1] = 1; //EscreverInteiro
                     break;
                     case 14: /*C_INPUT*/
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
@@ -87,45 +95,47 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         ia_32_head = addLine(ia_32_head, "", "CALL", "LeerChar", "", "", current->count+2, current->address);
                         ia_32_head = addLine(ia_32_head, "", "MOV DWORD", "EBX", "ESP", "", current->count+3, current->address);
                         ia_32_head = addLine(ia_32_head, "", "SUB DWORD", "EBX", "4", "", current->count+4, current->address);
-                        inputOutputFlags[2] = 1;
+                        inputOutputFlags[2] = 1; //LeerChar
                     break;
                     case 15: /*C_OUTPUT*/
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op1, "", "", current->count+1, current->address);
                         ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverChar", "", "", current->count+2, current->address);
                         ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+3, current->address);
-                        inputOutputFlags[3] = 1;
+                        inputOutputFlags[3] = 1; //EscreverChar
                         inputOutputFlags[8] = 1; //EscreveEnter
                     break;
                     case 16: /*H_INPUT*/
                         ia_32_head = addLine(ia_32_head, "", "PUSH", current->op1, "", "", current->count, current->address);
                         ia_32_head = addLine(ia_32_head, "", "CALL", "LerHexa", "", "", current->count+1, current->address);
-                        inputOutputFlags[4] = 1;
-                        inputOutputFlags[2] = 1;
+                        inputOutputFlags[4] = 1; //LerHexa
+                        inputOutputFlags[2] = 1; //LeerChar
                     break;
                     case 17: /*H_OUTPUT*/
                         ia_32_head = addLine(ia_32_head, "", "PUSH", current->op1, "", "", current->count, current->address);
                         ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverHexa", "", "", current->count+1, current->address);
-                        inputOutputFlags[5] = 1;
+                        inputOutputFlags[5] = 1; //EscreverHexa
                         inputOutputFlags[8] = 1; //EscreveEnter
                         inputOutputFlags[9] = 1; //EscreverCharSemEnter
                     break;
                     case 18: /*S_INPUT*///**********
+                        alterAddressingMode(current->op2);
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op1, "", "", current->count+1, current->address);
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op2, "", "", current->count+2, current->address);
                         ia_32_head = addLine(ia_32_head, "", "CALL", "LeerString", "", "", current->count+3, current->address);
                         ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+4, current->address);
-                        inputOutputFlags[6] = 1;
-                        inputOutputFlags[2] = 1;
+                        inputOutputFlags[6] = 1; //LeerString
+                        inputOutputFlags[2] = 1; //LeerChar
                     break;
                     case 19: /*S_OUTPUT*///**********
+                        alterAddressingMode(current->op2);
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op1, "", "", current->count+1, current->address);
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op2, "", "", current->count+2, current->address);
                         ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverString", "", "", current->count+3, current->address);
                         ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+4, current->address);
-                        inputOutputFlags[7] = 1;
+                        inputOutputFlags[7] = 1; //EscreverString
                         inputOutputFlags[8] = 1; //EscreveEnter
                         inputOutputFlags[9] = 1; //EscreverCharSemEnter
                     break;
@@ -209,4 +219,33 @@ int inArray(char *needle, char *haystack[]) {
         ++i;
     }
     return -1;
+}
+
+void alterAddressingMode(char *op) {
+    long integer;
+    int size, i;
+    char newOp[MAXCN] = "[";
+    char number[MAXCN];
+    char *token, op_aux[MAXCN];
+
+    if(strcmp(op, "") != 0) {
+
+        strcpy(op_aux, op);
+        size = strlen(op);
+        token = strtok(op, "+");
+        strcat(newOp, token);
+
+        for (i = 0; i < size; i++) {
+            if (op_aux[i] == '+') {
+                strcat(newOp, " + ");
+                token = strtok(NULL, "+");
+                integer = atoi(token) * 4;
+                sprintf(token, "%ld", integer);
+                strcat(newOp, token);
+            }
+        }
+        strcat(newOp, "]");
+        strcpy(op, newOp);
+    }
+
 }
