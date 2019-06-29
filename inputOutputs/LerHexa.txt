@@ -1,19 +1,26 @@
 LerHexa: enter 4,0
 mov dword [ebp-4], 0; zera o contador
-mov dword ebx, [ebp+12]; copia o endereço para ebx
-mov dword ecx, [ebp+8]; copia o tamanho máximo
-loop2: push ecx ;salva o tamanho máximo
-push ebx ;salva o endereço
+mov dword ebx, [ebp+8]; copia o endereço para ebx
+
+LeituraHexaLoop: push ebx ;salva o endereço
 push ebx ;endereço de retorno do char
 call LeerChar
 pop ebx ;recupera o endereço
-pop ecx ;recupera tamanho maximo
-add dword[ebp-4], 0x1 ; contador ++
-cmp dword [ebx], 0x0A ;se for enter pula
-je retorno2
+cmp dword [ebx], 0xA ;Analisa se acabou a digitação (foi digitado um 'enter')
+je FormaHexa
+add dword [ebp-4], 0x1 ;Adiciona 1 ao contador de caracteres lidos
+cmp dword [ebx], 0x40  ;Analisa se o numero é superior (A,B,C,D,E,F)
+jb  DigitoNumerico
 add dword ebx, 0x1 ;aumenta o endereço em 1B
-cmp dword [ebp-4], ecx ;limite máximo estabelecido pelo usuário
-jb loop2
-retorno2: mov eax, dword[ebp-4] ; move a quantidade lida para eax
+cmp dword [ebp-4], 8 ;limite máximo estabelecido pelo usuário
+jb LeituraHexaLoop
+je FormaHexa
+DigitoNumerico: sub dword [ebx], 0x30 ;Transforma de char em numero
+jne DigitoNumerico
+
+
+FormaHexa:
+
+FimLeituraHexa: mov eax, dword[ebp-4] ; move a quantidade lida para eax
 leave
 ret 8 ;elimina o endereço que foi gravado da pilha
