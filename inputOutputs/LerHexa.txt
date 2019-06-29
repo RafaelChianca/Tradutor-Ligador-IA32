@@ -16,7 +16,9 @@ cmp dword [ebp-4], 8 ;limite máximo estabelecido pelo usuário
 jb LeituraHexaLoop
 je FormaHexa
 DigitoNumerico: sub dword [ebx], 0x30 ;Transforma de char em numero
-jne DigitoNumerico
+add dword ebx, 0x1 ;aumenta o endereço em 1B
+cmp dword [ebp-4], 8 ;limite máximo estabelecido pelo usuário
+jb LeituraHexaLoop
 
 
 FormaHexa:
