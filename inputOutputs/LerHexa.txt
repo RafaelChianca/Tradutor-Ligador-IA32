@@ -7,21 +7,17 @@ push ebx ;endereço de retorno do char
 call LeerChar
 pop ebx ;recupera o endereço
 cmp dword [ebx], 0xA ;Analisa se acabou a digitação (foi digitado um 'enter')
-je FormaHexa
+je FimLeituraHexa
 add dword [ebp-4], 0x1 ;Adiciona 1 ao contador de caracteres lidos
 cmp dword [ebx], 0x40  ;Analisa se o numero é superior (A,B,C,D,E,F)
 jb  DigitoNumerico
 add dword ebx, 0x1 ;aumenta o endereço em 1B
-cmp dword [ebp-4], 8 ;limite máximo estabelecido pelo usuário
+cmp dword [ebp-4], 0x9 ;limite máximo estabelecido pelo usuário
 jb LeituraHexaLoop
-je FormaHexa
 DigitoNumerico: sub dword [ebx], 0x30 ;Transforma de char em numero
 add dword ebx, 0x1 ;aumenta o endereço em 1B
-cmp dword [ebp-4], 8 ;limite máximo estabelecido pelo usuário
+cmp dword [ebp-4], 0x9 ;limite máximo estabelecido pelo usuário
 jb LeituraHexaLoop
-
-
-FormaHexa:
 
 FimLeituraHexa: mov eax, dword[ebp-4] ; move a quantidade lida para eax
 leave

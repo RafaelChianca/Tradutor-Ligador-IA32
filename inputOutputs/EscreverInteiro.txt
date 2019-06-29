@@ -31,3 +31,25 @@ div dword ecx             ;Divide o numero por 10
 push dword edx            ;Coloca o remainder na pilha
 cmp eax, 0                ;Verifica se o número já foi colocado na pilha por completo
 jg GetNumPortionToPrint   ;Faz o loop até que todos os digitos estejam na pilha individualmente
+
+printNumberByNumber:
+add dword [ebp - 4], 1    ;Adiciona 1 no contador de itens impressos
+sub dword ebx, 4          ;Subtrai 4 do contador (4 bytes)
+pop dword eax             ;Pega o primeiro item a ser impresso
+push dword ebx            ;Salva o contador na pilha
+add dword  eax, 48 	      ;transforma em char numérico (soma 0x30) no conteudo a ser impresso
+push dword eax            ;Bota o endereço do próximo item a ser impresso na pilha
+mov edx, 1                ;Quantos caracteres serão impressos
+mov dword ecx, esp        ;O que será impresso (esp está apontando para o endereço do conteúdo)
+mov ebx, 1                ;Descritor do arquivo (stdout)
+mov eax, 4                ;Número de chamada do sistema (sys_write)
+int 0x80                  ;Chamada do kernel
+add dword esp, 4          ;Apaga o conteudo impresso da pilha
+pop dword ebx             ;Restaura o contador de itens da pilha
+cmp ebx, 0                ;Verifica se já foram todos os itens
+jne printNumberByNumber   ;Caso ainda não tenha ido todos, volta para o loop
+call EscreveEnter		  ;Escreve o enter no final da impressão
+pop dword eax             ;Bota em eax a quantidade de itens impressos
+add dword eax, 1		  ;Soma o '0xA' que foi impresso no final
+pop dword ebp			  ;Restaura o valor de ebp
+ret 4				      ;desenpilha o retorno para o PC e o argumento (numero que foi impresso)

@@ -28,7 +28,7 @@
 int main(int argc, char *argv[]) {
 
     node_t *head, *ia_32_head;
-    int inputOutputsFlags[8] = {0};
+    int inputOutputsFlags[10] = {0};
 
     head = initializeList(head);
     ia_32_head = initializeList(ia_32_head);

@@ -128,7 +128,7 @@ void read_input_output(node_t* ia_32_head, int* inputOutputFlags) {
     ia_32_fp = fopen("ia_32.s.txt", "a");
     fputs("\n", ia_32_fp);
 
-    for (i = 0; i < 8; i++) {
+    for (i = 0; i < 10; i++) {
         if (inputOutputFlags[i] == 1) {
             switch (i) {
                 case 0:
@@ -154,6 +154,12 @@ void read_input_output(node_t* ia_32_head, int* inputOutputFlags) {
                 break;
                 case 7:
                     fp = fopen ("../inputOutputs/EscreverString.txt", "r");
+                break;
+                case 8:
+                    fp = fopen ("../inputOutputs/EscreveEnter.txt", "r");
+                break;
+                case 9:
+                    fp = fopen ("../inputOutputs/EscreverCharSemEnter.txt", "r");
                 break;
             }
 

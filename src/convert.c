@@ -95,6 +95,7 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverChar", "", "", current->count+2, current->address);
                         ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+3, current->address);
                         inputOutputFlags[3] = 1;
+                        inputOutputFlags[8] = 1; //EscreveEnter
                     break;
                     case 16: /*H_INPUT*/
                         ia_32_head = addLine(ia_32_head, "", "PUSH", current->op1, "", "", current->count, current->address);
@@ -106,6 +107,8 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         ia_32_head = addLine(ia_32_head, "", "PUSH", current->op1, "", "", current->count, current->address);
                         ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverHexa", "", "", current->count+1, current->address);
                         inputOutputFlags[5] = 1;
+                        inputOutputFlags[8] = 1; //EscreveEnter
+                        inputOutputFlags[9] = 1; //EscreverCharSemEnter
                     break;
                     case 18: /*S_INPUT*///**********
                         ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
@@ -123,6 +126,8 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverString", "", "", current->count+3, current->address);
                         ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+4, current->address);
                         inputOutputFlags[7] = 1;
+                        inputOutputFlags[8] = 1; //EscreveEnter
+                        inputOutputFlags[9] = 1; //EscreverCharSemEnter
                     break;
                     case 20: /*STOP*/
                         ia_32_head = addLine(ia_32_head, "", "MOV", "EAX,", "1", "", current->count, current->address);

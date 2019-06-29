@@ -1,12 +1,17 @@
-EscreverChar: push dword ebp            ;Salva o valor de ebp na pilha
+EscreverCharSemEnter: push dword ebp            ;Salva o valor de ebp na pilha
 mov ebp, esp			  ;Copia o valor da posição de esp para ebp
 mov eax, [ebp+8]          ;Coloca o conteúdo de ebp+8 em eax (endereço do conteudo a ser impresso)
-mov edx, 1                ;Quantos caracteres serão impressos
+cmp dword [eax], 0x0009      ;Checar se é um número (0 a 9)
+jbe SomaNumeroChar
+ImprimeChar: mov edx, 1   ;Quantos caracteres serão impressos
 mov dword ecx, eax        ;O que será impresso (eax contem o endereço do conteúdo)
 mov ebx, 1                ;Descritor do arquivo (stdout)
 mov eax, 4                ;Número de chamada do sistema (sys_write)
 int 0x80                  ;Chamada do kernel
-call EscreveEnter		  ;Escreve o enter no final da impressão
 pop dword ebp			  ;Restaura o valor de ebp
 mov dword eax, 2          ;Retorna a quantidade de caracteres impressos em eax (1 caracter + 0xA)
 ret 4				      ;desenpilha o retorno para o PC e o argumento (numero que foi impresso)
+
+SomaNumeroChar:
+add dword  [eax], 0x30	      ;transforma em char numérico (soma 0x30) no conteudo a ser impresso
+jmp ImprimeChar
