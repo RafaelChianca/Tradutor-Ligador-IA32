@@ -27,122 +27,123 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
             }
             if (i != -1) {
                 switch (i) {
-                    case 1: /*ADD*///**********
+                    case 1: /*ADD*/
                         alterAddressingMode(current->op1);
-                        ia_32_head = addLine(ia_32_head, current->label, "ADD DWORD", "EAX,", current->op1, "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, current->label, "add dword", "eax,", current->op1, "", current->count, current->address);
                     break;
-                    case 2: /*SUB*///**********
+                    case 2: /*SUB*/
                         alterAddressingMode(current->op1);
-                        ia_32_head = addLine(ia_32_head, current->label, "SUB DWORD", "EAX,", current->op1, "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, current->label, "sub dword", "eax,", current->op1, "", current->count, current->address);
                     break;
-                    case 3: /*MULT*///**********
+                    case 3: /*MULT*/
                         alterAddressingMode(current->op1);
-                        ia_32_head = addLine(ia_32_head, current->label, "IMUL DWORD", current->op1, "", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, current->label, "imul dword", current->op1, "", "", current->count, current->address);
                     break;
-                    case 4: /*DIV*///**********
+                    case 4: /*DIV*/
                         alterAddressingMode(current->op1);
-                        ia_32_head = addLine(ia_32_head, current->label, "IDIV DWORD", current->op1, "", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, current->label, "idiv dword", current->op1, "", "", current->count, current->address);
                     break;
                     case 5: /*JMP*/
-                        ia_32_head = addLine(ia_32_head, current->label, "JMP", current->op1, "", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, current->label, "jmp", current->op1, "", "", current->count, current->address);
                     break;
                     case 6: /*JMPN*/
-                        ia_32_head = addLine(ia_32_head, current->label, "CMP", "0,", "EAX", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "JL", current->op1, "", "", current->count+1, current->address+2);
+                        ia_32_head = addLine(ia_32_head, current->label, "cmp", "0,", "eax", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "jl", current->op1, "", "", current->count+1, current->address+2);
                     break;
                     case 7: /*JMPP*/
-                        ia_32_head = addLine(ia_32_head, current->label, "CMP", "EAX,", "0", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "JG", current->op1, "", "", current->count+1, current->address+2);
+                        ia_32_head = addLine(ia_32_head, current->label, "cmp", "eax,", "0", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "jg", current->op1, "", "", current->count+1, current->address+2);
                     break;
                     case 8: /*JMPZ*/
-                        ia_32_head = addLine(ia_32_head, current->label, "CMP", "EAX,", "0", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "JE", current->op1, "", "", current->count+1, current->address+2);
+                        ia_32_head = addLine(ia_32_head, current->label, "cmp", "eax,", "0", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "je", current->op1, "", "", current->count+1, current->address+2);
                     break;
-                    case 9: /*COPY*///********** //**********
+                    case 9: /*COPY*/
                         alterAddressingMode(current->op1);
                         alterAddressingMode(current->op2);
                         strcat(current->op2, ",");
-                        ia_32_head = addLine(ia_32_head, current->label, "MOV DWORD", "EBX,", current->op1, "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, current->label, "MOV DWORD", current->op2, "EBX", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, current->label, "mov dword", "ebx,", current->op1, "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, current->label, "mov dword", current->op2, "ebx", "", current->count, current->address);
                     break;
-                    case 10: /*LOAD*///**********
+                    case 10: /*LOAD*/
                         alterAddressingMode(current->op1);
-                        ia_32_head = addLine(ia_32_head, current->label, "MOV DWORD", "EAX,", current->op1, "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, current->label, "mov dword", "eax,", current->op1, "", current->count, current->address);
                     break;
-                    case 11: /*STORE*///**********
+                    case 11: /*STORE*/
                         alterAddressingMode(current->op1);
                         strcat(current->op1, ",");
-                        ia_32_head = addLine(ia_32_head, current->label, "MOV DWORD", current->op1, "EAX", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, current->label, "mov dword", current->op1, "eax", "", current->count, current->address);
                     break;
                     case 12: /*INPUT*/
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op1, "", "", current->count+1, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "CALL", "LeerInteiro", "", "", current->count+2, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+3, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", "eax", "", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op1, "", "", current->count+1, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "call", "LeerInteiro", "", "", current->count+2, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "pop dword", "eax", "", "", current->count+3, current->address);
                         inputOutputFlags[0] = 1; //LeerInteiro
                         inputOutputFlags[2] = 1; //LeerChar
                     break;
                     case 13: /*OUTPUT*/
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op1, "", "", current->count+1, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverInteiro", "", "", current->count+2, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+3, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", "eax", "", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op1, "", "", current->count+1, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "call", "EscreverInteiro", "", "", current->count+2, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "pop dword", "eax", "", "", current->count+3, current->address);
                         inputOutputFlags[1] = 1; //EscreverInteiro
+                        inputOutputFlags[8] = 1; //EscreveEnter
                     break;
                     case 14: /*C_INPUT*/
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op1, "", "", current->count+1, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "CALL", "LeerChar", "", "", current->count+2, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "MOV DWORD", "EBX", "ESP", "", current->count+3, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "SUB DWORD", "EBX", "4", "", current->count+4, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", "eax", "", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op1, "", "", current->count+1, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "call", "LeerChar", "", "", current->count+2, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "mov dword", "ebx", "esp", "", current->count+3, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "sub dword", "ebx", "4", "", current->count+4, current->address);
                         inputOutputFlags[2] = 1; //LeerChar
                     break;
                     case 15: /*C_OUTPUT*/
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op1, "", "", current->count+1, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverChar", "", "", current->count+2, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+3, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", "eax", "", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op1, "", "", current->count+1, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "call", "EscreverChar", "", "", current->count+2, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "pop dword", "eax", "", "", current->count+3, current->address);
                         inputOutputFlags[3] = 1; //EscreverChar
                         inputOutputFlags[8] = 1; //EscreveEnter
                     break;
                     case 16: /*H_INPUT*/
-                        ia_32_head = addLine(ia_32_head, "", "PUSH", current->op1, "", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "CALL", "LerHexa", "", "", current->count+1, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push", current->op1, "", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "call", "LerHexa", "", "", current->count+1, current->address);
                         inputOutputFlags[4] = 1; //LerHexa
                         inputOutputFlags[2] = 1; //LeerChar
                     break;
                     case 17: /*H_OUTPUT*/
-                        ia_32_head = addLine(ia_32_head, "", "PUSH", current->op1, "", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverHexa", "", "", current->count+1, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push", current->op1, "", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "call", "EscreverHexa", "", "", current->count+1, current->address);
                         inputOutputFlags[5] = 1; //EscreverHexa
                         inputOutputFlags[8] = 1; //EscreveEnter
                         inputOutputFlags[9] = 1; //EscreverCharSemEnter
                     break;
-                    case 18: /*S_INPUT*///**********
+                    case 18: /*S_INPUT*/
                         alterAddressingMode(current->op2);
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op1, "", "", current->count+1, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op2, "", "", current->count+2, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "CALL", "LeerString", "", "", current->count+3, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+4, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", "eax", "", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op1, "", "", current->count+1, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op2, "", "", current->count+2, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "call", "LeerString", "", "", current->count+3, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "pop dword", "eax", "", "", current->count+4, current->address);
                         inputOutputFlags[6] = 1; //LeerString
                         inputOutputFlags[2] = 1; //LeerChar
                     break;
-                    case 19: /*S_OUTPUT*///**********
+                    case 19: /*S_OUTPUT*/
                         alterAddressingMode(current->op2);
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", "EAX", "", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op1, "", "", current->count+1, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "PUSH DWORD", current->op2, "", "", current->count+2, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "CALL", "EscreverString", "", "", current->count+3, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "POP DWORD", "EAX", "", "", current->count+4, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", "eax", "", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op1, "", "", current->count+1, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op2, "", "", current->count+2, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "call", "EscreverString", "", "", current->count+3, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "pop dword", "eax", "", "", current->count+4, current->address);
                         inputOutputFlags[7] = 1; //EscreverString
                         inputOutputFlags[8] = 1; //EscreveEnter
                         inputOutputFlags[9] = 1; //EscreverCharSemEnter
                     break;
                     case 20: /*STOP*/
-                        ia_32_head = addLine(ia_32_head, "", "MOV", "EAX,", "1", "", current->count, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "MOV", "EBX,", "0", "", current->count+1, current->address);
-                        ia_32_head = addLine(ia_32_head, "", "INT 80h", "", "", "", current->count+2, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "mov", "eax,", "1", "", current->count, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "mov", "ebx,", "0", "", current->count+1, current->address);
+                        ia_32_head = addLine(ia_32_head, "", "int 80h", "", "", "", current->count+2, current->address);
                     break;
                 }
             }
@@ -150,13 +151,14 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                 switch (j) {
                     case 1: /*SECTION*/
                         if(strcmp(current->op1, "TEXT") == 0) {
-                            ia_32_head = addLine(ia_32_head, "", "SECTION", ".TEXT", "", "", current->count, current->address);
+                            ia_32_head = addLine(ia_32_head, "", "global", "_start", "", "", current->count, current->address);
+                            ia_32_head = addLine(ia_32_head, "", "section", ".text", "", "", current->count, current->address);
                             ia_32_head = addLine(ia_32_head, "", "_start:", "", "", "", current->count+1, current->address);
 
                         }
                         else if(strcmp(current->op1, "DATA") == 0) {
                             if (data_node == NULL) {
-                                data_node = createNode("", "SECTION", ".DATA", "", "", current->count, current->address);
+                                data_node = createNode("", "section", ".data", "", "", current->count, current->address);
                                 data_node->next = ia_32_head->next;
                                 ia_32_head->next = data_node;
                             }
@@ -173,19 +175,19 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         } else {
                             strcpy(current->op1, "0");
                         }
-                        node = createNode(current->label, "DD", current->op1, "", "", current->count, current->address);
+                        node = createNode(current->label, "dd", current->op1, "", "", current->count, current->address);
                         data_node = addNextNode(data_node, node);
 
                     break;
                     case 3: /*CONST*/
-                        node = createNode(current->label, "DD", current->op1, "", "", current->count, current->address);
+                        node = createNode(current->label, "dd", current->op1, "", "", current->count, current->address);
                         data_node = addNextNode(data_node, node);
 
                     break;
                     case 4: /*EQU*/
                         node = createNode(current->label, current->opcode, current->op1, "", "", current->count, current->address);
                         if (data_node == NULL) {
-                            data_node = createNode("", "SECTION", ".DATA", "", "", current->count, current->address);
+                            data_node = createNode("", "section", ".data", "", "", current->count, current->address);
                             data_node->next = ia_32_head->next;
                             ia_32_head->next = data_node;
                         }
@@ -193,14 +195,14 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
 
                     break;
                     case 5: /*IF*/
+                        alterAddressingMode(current->op1);
                         strcat(current->op1, ",");
-                        ia_32_head = addLine(ia_32_head, "", "CMP", current->op1, "1", "", current->count, current->address);
-
+                        ia_32_head = addLine(ia_32_head, "", "cmp dword", current->op1, "1", "", current->count, current->address);
                         if (strcmp(current->next->next->label, "") == 0) {
-                            strcpy(current->next->next->label, "JUMP");
-                            ia_32_head = addLine(ia_32_head, "", "JNE", "JUMP", "", "", current->count, current->address);
+                            strcpy(current->next->next->label, "jump");
+                            ia_32_head = addLine(ia_32_head, "", "jne", "jump", "", "", current->count, current->address);
                         } else {
-                            ia_32_head = addLine(ia_32_head, "", "JNE", current->next->next->label, "", "", current->count, current->address);
+                            ia_32_head = addLine(ia_32_head, "", "jne", current->next->next->label, "", "", current->count, current->address);
                         }
                     break;
                 }

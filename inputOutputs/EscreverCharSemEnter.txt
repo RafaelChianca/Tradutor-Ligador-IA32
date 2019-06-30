@@ -1,7 +1,7 @@
 EscreverCharSemEnter: push dword ebp            ;Salva o valor de ebp na pilha
 mov ebp, esp			  ;Copia o valor da posição de esp para ebp
 mov eax, [ebp+8]          ;Coloca o conteúdo de ebp+8 em eax (endereço do conteudo a ser impresso)
-cmp dword [eax], 0x0009      ;Checar se é um número (0 a 9)
+cmp byte [eax], 0x9      ;Checar se é um número (0 a 9)
 jbe SomaNumeroChar
 ImprimeChar: mov edx, 1   ;Quantos caracteres serão impressos
 mov dword ecx, eax        ;O que será impresso (eax contem o endereço do conteúdo)

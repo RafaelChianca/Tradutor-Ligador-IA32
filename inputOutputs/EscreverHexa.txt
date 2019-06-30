@@ -8,12 +8,12 @@ loop3: push ebx ;salva o endereço
   pop ebx ;recupera o endereço
   add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
   cmp byte [ebx], 0xA
-  je  FimDaString
+  je  FimDoHexa
   add ebx, 0x1 ; aumenta em 1B
   loop loop3 ;se não for 0 pula
   add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
   call EscreveEnter		  ;Escreve o enter no final da impressão
 
-FimDaString: mov eax, [esp] ;quantidade escrita
+FimDoHexa: mov eax, [esp] ;quantidade escrita
   leave
   ret 8
