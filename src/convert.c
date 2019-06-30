@@ -185,7 +185,7 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
 
                     break;
                     case 4: /*EQU*/
-                        node = createNode(current->label, current->opcode, current->op1, "", "", current->count, current->address);
+                        node = createNode(current->label, "dd", current->op1, "", "", current->count, current->address);
                         if (data_node == NULL) {
                             data_node = createNode("", "section", ".data", "", "", current->count, current->address);
                             data_node->next = ia_32_head->next;
