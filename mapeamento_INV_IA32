@@ -1,6 +1,6 @@
-INVENTADO           IA-32
-ADD   A             ADD EAX <- EAX + A
-SUB   B             SUB EAX <- EAX - B
+INVENTADO           IA-32                   INSTRUÇÃO
+ADD   A             ADD DWORD EAX, A        3123132
+SUB   B             SUB DWORD EAX, A
 MULT  C             MUL EDX.EAX <- EAX*C
 *(DIV   D             DIV  <- EAX*C)
 JMP   E             JMP E

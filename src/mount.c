@@ -214,6 +214,10 @@ void writeFile (node_t *head, char *filename) {
             fprintf(fp, "%s\t", current->op3);
             fprintf(fp, "\n");
 
+            for (i = 0; i < current->count; i++) {
+                fprintf(fp, "nop\n");
+            }
+
             current = current->next;
         }
         fclose (fp);
