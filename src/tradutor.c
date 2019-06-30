@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
     deleteList(head);
 
     read_input_output(ia_32_head, inputOutputsFlags);
+    makeLabelAddrFile(argv[1]);
 
     deleteList(ia_32_head);
 

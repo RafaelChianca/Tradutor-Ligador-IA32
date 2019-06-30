@@ -1,49 +1,100 @@
-INVENTADO           IA-32                   INSTRUÇÃO
-ADD   A             ADD DWORD EAX, A        3123132
-SUB   B             SUB DWORD EAX, A
-MULT  C             MUL EDX.EAX <- EAX*C
-*(DIV   D             DIV  <- EAX*C)
-JMP   E             JMP E
+add dword eax;03 05
 
-JMPN  F             CMP 0, EAX
-                    JL  F
+sub dword eax;2b 05
 
-JMPP  G             CMP EAX, 0
-                    JG  G
+imul dword;f7 2d
 
-JMPZ  H             CMP EAX, 0
-                    JE  H
+idiv dword;f7 3d
 
-COPY  I, J          MOV J, I
-LOAD  K             MOV EAX, K
-STORE L             MOV L, EAX
+jmp dword;e9
 
-INPUT   M           PUSH M
-                    CALL LerInteiro
+cmp dword eax, 0; 83 f8 00
 
-OUTPUT  N           PUSH N
-                    CALL EscreverInteiro
+jl EscreverChar;7c
 
-C_INPUT     O       PUSH O
-                    CALL LerChar
+jg LeerString;0f 8f
 
-C_OUTPUT    P       PUSH P
-                    CALL EscreverChar
+je EscreverString;0f 84
 
-H_INPUT     Q       PUSH Q
-                    CALL LerHexa
+mov dword ebx, [B];8b 1d
 
-H_OUTPUT    R       PUSH R
-                    CALL EscreverHexa
+mov dword [B], ebx
 
-S_INPUT     S, T    PUSH S
-                    PUSH T
-                    CALL LerString
+mov dword eax, [B]
 
-S_OUTPUT    U, V    PUSH U
-                    PUSH V
-                    CALL EscreverString
+mov dword [B], eax
 
-STOP                MOV EAX, 1
-                    MOV EBX, 0
-                    int 80h
+push dword eax;
+
+push dword B
+
+call LeerInteiro
+
+pop dword eax
+
+call EscreverInteiro
+
+call LeerChar
+
+mov dword ebx, esp
+
+sub dword ebx, 4
+
+call EscreverChar
+
+push B
+
+call EscreverHexa
+
+call LeerString
+
+call EscreverString
+
+mov eax, 1
+
+mov ebx, [B]
+
+int 80h
+
+
+jne LeerHexa
+
+LeerChar:
+add dword eax, [B]
+
+sub dword eax, [B]
+
+EscreverChar:
+add dword eax, [B]
+
+sub dword eax, [B]
+
+LeerInteiro:
+add dword eax, [B]
+
+sub dword eax, [B]
+
+EscreverInteiro:
+add dword eax, [B]
+
+sub dword eax, [B]
+
+LeerString:
+add dword eax, [B]
+
+sub dword eax, [B]
+
+EscreverString:
+add dword eax, [B]
+
+sub dword eax, [B]
+
+LeerHexa:
+add dword eax, [B]
+
+sub dword eax, [B]
+
+EscreverHexa:
+add dword eax, [B]
+
+sub dword eax, [B]

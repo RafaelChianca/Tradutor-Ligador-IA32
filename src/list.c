@@ -21,13 +21,13 @@ node_t* initializeList(node_t *head) {
     }
 
     head->count = 0;
-    head->address = 0;
+    strcpy(head->address, "");
     head->next = NULL;
 
     return head;
 }
 
-node_t* createNode(char *label ,char *opcode, char *op1, char *op2, char *op3, int count, int address){
+node_t* createNode(char *label ,char *opcode, char *op1, char *op2, char *op3, int count, char *address){
     node_t* node = (node_t *)malloc(sizeof(node_t));
     strcpy(node->label, label);
     strcpy(node->opcode, opcode);
@@ -35,7 +35,7 @@ node_t* createNode(char *label ,char *opcode, char *op1, char *op2, char *op3, i
     strcpy(node->op2, op2);
     strcpy(node->op3, op3);
     node->count = count;
-    node->address = address;
+    strcpy(node->address, address);
 
     node->next = NULL;
     return node;
@@ -57,7 +57,7 @@ void printList(node_t *head) {
 
 }
 
-node_t* addLine(node_t *head, char *label ,char *opcode, char *op1, char *op2, char *op3, int count, int address) {
+node_t* addLine(node_t *head, char *label ,char *opcode, char *op1, char *op2, char *op3, int count, char *address) {
     node_t * current = head;
     while (current->next != NULL) {
         current = current->next;
@@ -69,7 +69,7 @@ node_t* addLine(node_t *head, char *label ,char *opcode, char *op1, char *op2, c
     strcpy(current->next->op2, op2);
     strcpy(current->next->op3, op3);
     current->next->count = count;
-    current->next->address = address;
+    strcpy(current->next->address, address);
 
     current->next->next = NULL;
 

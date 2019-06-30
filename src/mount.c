@@ -28,7 +28,6 @@ void mountProgram(node_t *head, char *filename) {
     char *temp;
 
     label_head = initializeList(label_head);
-    label_head = makeLabelAddrList(label_head, head);
 
     while(current != NULL) {
         directive_flag = inVector(current->opcode, directives, 7);
@@ -84,7 +83,7 @@ void mountProgram(node_t *head, char *filename) {
 
             for (i = 1; i < spaces; i++) {
                 strcat(current->opcode, "\n\n");
-                sprintf(buffer, "%d", current->address+i);
+                // sprintf(buffer, "%d", current->address+i);
                 strcat(current->opcode, buffer);
                 strcat(current->opcode, "\t00");
             }
@@ -150,7 +149,7 @@ int isLabelInList(char* label, node_t* head, int case_if) {
         /*FOUND LABEL DEFINITION -> RETURN ITS ADDRS*/
         if(strcmp(current->label, label) == 0) {
             if(!case_if) {
-                return current->address;
+                // return current->address;
             }
             else {
                 return atoi(current->op1);
@@ -161,17 +160,35 @@ int isLabelInList(char* label, node_t* head, int case_if) {
     return -1;
 }
 
-node_t* makeLabelAddrList(node_t* label_head, node_t* head) {
-    node_t *current = head->next;
+void makeLabelAddrFile(char* filename) {
+    FILE *fp_ia_32, *fp_label_addr;
+    char *temp, filename_buffer[MAXCN];
+    char *line;
+    char *token;
+    int i;
+    size_t len = 0;
 
-    while(current != NULL) {
-        /*FOUND LABEL IN CODE*/
-        if(current->label[0] != '\0' && strcmp(current->label, "00") != 0) {
-            label_head = addLine(label_head, current->label, current->opcode, current->op1, current->op2, current->op3, current->count, current->address);
+    // strcpy(filename_buffer, filename);
+    // temp = strchr(filename_buffer, '.');
+    // *temp = '\0';
+    //
+    // strcat(filename_buffer, ".s.txt");
+
+    fp_ia_32 = fopen("ia_32.s.txt", "r");
+    fp_label_addr = fopen("labels.txt", "w");
+
+    if (fp_ia_32 != NULL && fp_label_addr != NULL) {
+        while ((getline(&line, &len, fp_ia_32)) != -1) {
+            token = strchr(line, ':');
+            if (strcmp(line, "\n") != 0) {
+                if (token != NULL) {
+                    token = strtok(line, ":");
+                    strcat(token, "\n");
+                    fputs(token, fp_label_addr);
+                }
+            }
         }
-        current = current->next;
     }
-    return label_head;
 }
 
 int getOpcode (char *mneumonic) {

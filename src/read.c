@@ -102,7 +102,7 @@ void readAsmFile (char *filename, node_t *head) {
 
                 syntaticAnalyzer(line, &address_counter);
 
-                head = addLine(head, line[0], line[1], line[2], line[3], line[4], line_counter, aux);
+                head = addLine(head, line[0], line[1], line[2], line[3], line[4], line_counter, "");
 
                 memset(line, 0, sizeof(line[0][0]) * 5 * MAXCN);
                 index = 1;
