@@ -164,8 +164,10 @@ void makeLabelAddrFile(char* filename) {
     FILE *fp_ia_32, *fp_label_addr;
     char *temp, filename_buffer[MAXCN];
     char *line;
-    char *token;
-    int i;
+    char *token, count[MAXCN];
+    int i, line_count = 0;
+    int text_initial_addr = 0x08048080;
+
     size_t len = 0;
 
     // strcpy(filename_buffer, filename);
@@ -179,16 +181,30 @@ void makeLabelAddrFile(char* filename) {
 
     if (fp_ia_32 != NULL && fp_label_addr != NULL) {
         while ((getline(&line, &len, fp_ia_32)) != -1) {
+            if(!strstr(line, "nop") && !strstr(line, "_start") && strcmp(line, "\n") != 0) {
+                line_count+=7;
+                if(strstr(line, ".text")){
+                    line_count = 0x08048079;
+
+                } else if(strstr(line, ".data")) {
+                    line_count = -7;
+                }
+            }
             token = strchr(line, ':');
             if (strcmp(line, "\n") != 0) {
                 if (token != NULL) {
                     token = strtok(line, ":");
+                    sprintf(count, "%x", line_count);
+                    strcat(token, ";");
+                    strcat(token, count);
                     strcat(token, "\n");
                     fputs(token, fp_label_addr);
                 }
             }
         }
     }
+    fclose(fp_ia_32);
+    fclose(fp_label_addr);
 }
 
 int getOpcode (char *mneumonic) {
@@ -225,10 +241,17 @@ void writeFile (node_t *head, char *filename) {
             else {
                 fprintf(fp, "\t");
             }
+
             fprintf(fp, "%s\t", current->opcode);
-            fprintf(fp, "%s\t", current->op1);
-            fprintf(fp, "%s\t", current->op2);
-            fprintf(fp, "%s\t", current->op3);
+
+            if(strcmp(current->op2, "") != 0) {
+                fprintf(fp, "%s,\t", current->op1);
+            }
+            else {
+                fprintf(fp, "%s\t", current->op1);
+            }
+
+            fprintf(fp, "%s", current->op2);
             fprintf(fp, "\n");
 
             for (i = 0; i < current->count; i++) {

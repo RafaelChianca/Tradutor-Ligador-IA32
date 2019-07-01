@@ -1,6 +1,13 @@
 João Victor de Souza Poletti    15/0132425
 Rafael Martins Pereira Chianca  15/0145608
 
+O diretório do trabalho está dividido da seguinte forma:
+    - includes: contém os headers dos .c;
+    - inputOutputs: contém as funções de I/O requisitadas na documentação do trabalho;
+    - src: contém os .c
+        - asm: arquivos de assembly inventado;
+        - obj: arquivos objetos resultantes da compilação do gcc.
+
 Para a utilização do programa, deve-se ter em mente que, como não foi especificado na documentação do trabalho, optamos
 considerar o input de caracteres para a função LerHexa consiste em caracteres maiúsculos apenas (A,B,C,D,E,F). Claro,
 os números continuam funcionando normalmente.
@@ -14,9 +21,6 @@ Para a execução do programa, deve-se seguir esse fluxo:
     "./tradutor <nome do arquivo de entrada em assembly inventado>"
 
 - Em seguida, o arquivo .s será criado com o mesmo nome do arquivo de entrada.
-
-
-
 
 Desenvolvido em UbuntuMate (18.04 LTS Bionic Beaver 64-bit) Versão 1.20.1
 Versão gcc: (Ubuntu 7.4.0-1ubuntu1~18.04.1) 7.4.0

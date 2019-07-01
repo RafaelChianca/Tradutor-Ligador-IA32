@@ -29,11 +29,11 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                 switch (i) {
                     case 1: /*ADD*/
                         alterAddressingMode(current->op1);
-                        ia_32_head = addLine(ia_32_head, current->label, "add dword", "eax,", current->op1, "", 2, "0305");
+                        ia_32_head = addLine(ia_32_head, current->label, "add dword", "eax", current->op1, "", 2, "0305");
                     break;
                     case 2: /*SUB*/
                         alterAddressingMode(current->op1);
-                        ia_32_head = addLine(ia_32_head, current->label, "sub dword", "eax,", current->op1, "", 2, "2b05");
+                        ia_32_head = addLine(ia_32_head, current->label, "sub dword", "eax", current->op1, "", 2, "2b05");
                     break;
                     case 3: /*MULT*/
                         alterAddressingMode(current->op1);
@@ -47,31 +47,29 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         ia_32_head = addLine(ia_32_head, current->label, "jmp", current->op1, "", "", 5, "e9");
                     break;
                     case 6: /*JMPN*/
-                        ia_32_head = addLine(ia_32_head, current->label, "cmp dword", "eax,", "0", "", 4, "83f800");
+                        ia_32_head = addLine(ia_32_head, current->label, "cmp dword", "eax", "0", "", 4, "83f800");
                         ia_32_head = addLine(ia_32_head, "", "jl", current->op1, "", "", 5, "7c");
                     break;
                     case 7: /*JMPP*/
-                        ia_32_head = addLine(ia_32_head, current->label, "cmp dword", "eax,", "0", "", 4, "83f800");
+                        ia_32_head = addLine(ia_32_head, current->label, "cmp dword", "eax", "0", "", 4, "83f800");
                         ia_32_head = addLine(ia_32_head, "", "jg", current->op1, "", "", 5, "0f8f");
                     break;
                     case 8: /*JMPZ*/
-                        ia_32_head = addLine(ia_32_head, current->label, "cmp dword", "eax,", "0", "", 4, "83f800");
+                        ia_32_head = addLine(ia_32_head, current->label, "cmp dword", "eax", "0", "", 4, "83f800");
                         ia_32_head = addLine(ia_32_head, "", "je", current->op1, "", "", 5, "0f84");
                     break;
                     case 9: /*COPY*/
                         alterAddressingMode(current->op1);
                         alterAddressingMode(current->op2);
-                        strcat(current->op2, ",");
-                        ia_32_head = addLine(ia_32_head, current->label, "mov dword", "ebx,", current->op1, "", 2, "8b1d");
+                        ia_32_head = addLine(ia_32_head, current->label, "mov dword", "ebx", current->op1, "", 2, "8b1d");
                         ia_32_head = addLine(ia_32_head, current->label, "mov dword", current->op2, "ebx", "", 2, "891d");
                     break;
                     case 10: /*LOAD*/
                         alterAddressingMode(current->op1);
-                        ia_32_head = addLine(ia_32_head, current->label, "mov dword", "eax,", current->op1, "", 2, "a178");
+                        ia_32_head = addLine(ia_32_head, current->label, "mov dword", "eax", current->op1, "", 2, "a178");
                     break;
                     case 11: /*STORE*/
                         alterAddressingMode(current->op1);
-                        strcat(current->op1, ",");
                         ia_32_head = addLine(ia_32_head, current->label, "mov dword", current->op1, "eax", "", 2, "a378");
                     break;
                     case 12: /*INPUT*/
@@ -147,8 +145,8 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         inputOutputFlags[9] = 1; //EscreverCharSemEnter
                     break;
                     case 20: /*STOP*/
-                        ia_32_head = addLine(ia_32_head, "", "mov", "eax,", "1", "", 2, "b801000000");
-                        ia_32_head = addLine(ia_32_head, "", "mov", "ebx,", "0", "", 2, "bb00000000");
+                        ia_32_head = addLine(ia_32_head, "", "mov", "eax", "1", "", 2, "b801000000");
+                        ia_32_head = addLine(ia_32_head, "", "mov", "ebx", "0", "", 2, "bb00000000");
                         ia_32_head = addLine(ia_32_head, "", "int 80h", "", "", "", 5, "cd80");
                     break;
                 }
@@ -202,7 +200,6 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                     break;
                     case 5: /*IF*/
                         alterAddressingMode(current->op1);
-                        strcat(current->op1, ",");
                         ia_32_head = addLine(ia_32_head, "", "cmp dword", current->op1, "1", "", 0, "833d");
                         if (strcmp(current->next->next->label, "") == 0) {
                             strcpy(current->next->next->label, "jump");
