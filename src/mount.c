@@ -258,6 +258,8 @@ void writeFile (node_t *head, char *filename) {
                 fprintf(fp, "nop\n");
             }
 
+
+
             current = current->next;
         }
         fclose (fp);

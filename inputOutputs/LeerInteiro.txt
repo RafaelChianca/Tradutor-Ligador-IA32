@@ -1,54 +1,261 @@
 LeerInteiro: push dword ebp      ;Salva o valor de ebp na pilha
+nop
+nop
+nop
+nop
+nop
+nop
 mov ebp, esp	    ;Copia o valor da posição de esp para ebp
+nop
+nop
+nop
+nop
+nop
 push dword 0        ;Reserva espaço na pilha para o contador de caracteres lidos (ebp-4)
+nop
+nop
+nop
+nop
+nop
 push dword 0        ;Reserva na pilha espaço para a flag se o número é negativo (0 - positivo, 1 - negativo) (ebp-8)
+nop
+nop
+nop
+nop
+nop
 mov dword eax, esp  ;Bota em eax o endereço de esp
+nop
+nop
+nop
+nop
+nop
 sub dword eax, 4    ;Posiciona eax para a próxima posição da pilha
+nop
+nop
+nop
+nop
 push dword 0        ;Bota zero no conteudo da pilha esp-4
+nop
+nop
+nop
+nop
+nop
 push dword eax      ;bota na pilha o endereço da próxima posição (que é exatamente esp-4), em esp-8
+nop
+nop
+nop
+nop
+nop
+nop
 call LeerChar
+nop
+nop
 add dword [ebp-4], 1 ;Adiciona 1 ao contador de caracteres lidos
+nop
+nop
+nop
 cmp dword [esp], 45       ;Analisa se o numero é negativo ('-' no inicio)
+nop
+nop
+nop
 jne LeituraInteiroLoop
+nop
+nop
+nop
+nop
+nop
 mov dword [ebp-8], 1  ;Número negativo
 add dword esp, 4      ;Remove o caracter '-' da pilha
+nop
+nop
+nop
+nop
 sub dword [ebp-4], 1  ;Remove do contador de caracteres lido o '-' (para evitar problemas no loop TransformaEmInteiro, é readicionado essa quantidade futuramente)
- ;Loop para ler o inteiro até o enter
+nop
+nop
 LeituraInteiroLoop: mov dword eax, esp  ;Bota em eax o endereço de esp
+nop
+nop
+nop
+nop
+nop
 sub dword eax, 4    ;Posiciona eax para a próxima posição da pilha
+nop
+nop
+nop
+nop
 push dword 0        ;Bota zero no conteudo da pilha esp-4
+nop
+nop
+nop
+nop
+nop
 push dword eax      ;bota na pilha o endereço da próxima posição (que é exatamente esp-4), em esp-8
+nop
+nop
+nop
+nop
+nop
+nop
 call LeerChar
+nop
+nop
 add dword [ebp-4], 1 ;Adiciona 1 ao contador de caracteres lidos
+nop
+nop
+nop
 cmp dword [esp], 0xA       ;Analisa se acabou a digitação (foi digitado um 'enter')
+nop
+nop
+nop
 jne LeituraInteiroLoop  ;Caso ainda não tenha sido um enter
+nop
+nop
+nop
+nop
+nop
 add dword esp, 4      ;Remove o enter da pilha
+nop
+nop
+nop
+nop
 mov dword eax, 1      ;Coloca 1 no multiplicador numérico
+nop
+nop
 mov dword ecx, [ebp-4]  ;Bota em ecx a quantidade de caracteres lido
+nop
+nop
+nop
+nop
 sub dword ecx, 1      ;Remove o 'enter' lido
+nop
+nop
+nop
+nop
 mov dword edx, [ebp+8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
+nop
+nop
+nop
+nop
 mov dword [edx], 0 ;Bota ZERO no conteudo da variavel que será colocado a leitura do inteiro
-
+nop
 TransformaEmInteiro: pop dword ebx       ;Bota o caracter lido em ebx (do último para o primeiro)
+nop
+nop
+nop
+nop
+nop
+nop
 sub dword ecx, 1    ;Subtrai 1 do contador de inteiros
+nop
+nop
+nop
+nop
 sub dword ebx, 0x30 ;Transforma de char em numero
+nop
+nop
+nop
+nop
 push dword eax      ;Salva o conteudo de eax na pilha
+nop
+nop
+nop
+nop
+nop
+nop
 imul dword ebx      ;Ajusta a posição do caracter no inteiro
+nop
+nop
+nop
+nop
+nop
 mov dword edx, [ebp+8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
+nop
+nop
+nop
+nop
 add dword [edx], eax  ;Salva no conteudo da variavel o valor já convertido para inteiro
+nop
+nop
+nop
+nop
+nop
 pop dword eax     ;Restaura o valor de eax
+nop
+nop
+nop
+nop
+nop
+nop
 mov dword ebx, 10 ;Bota o numero 10 em ebx
+nop
+nop
 imul dword ebx    ;Multiplica eax por 10
+nop
+nop
+nop
+nop
+nop
 cmp dword ecx, 0  ;Caso ja tenha lido todos os caracteres
+nop
+nop
+nop
+nop
 jne TransformaEmInteiro
+nop
+nop
+nop
+nop
+nop
 cmp dword [ebp-8], 0  ;Verifica se o numero era negativo
+nop
+nop
+nop
 je  FimLeituraInteiro
+nop
+nop
+nop
+nop
+nop
 add dword [ebp-4], 1  ;Adiciona o '-' como caracter lido
+nop
+nop
+nop
 mov dword edx, [ebp+8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
+nop
+nop
+nop
+nop
 sub dword [edx], 1  ;Subtrai 1 do numero inteiro
+nop
+nop
+nop
+nop
 xor dword [edx], 0xFFFFFFFF ;Faz o 'Ou' exclusivo, adicionando o negativo
-
+nop
+nop
+nop
+nop
 FimLeituraInteiro: mov dword eax, [ebp-4]    ;Bota em eax a quantidade de caracteres lidos
+nop
+nop
+nop
+nop
 mov dword esp, ebp    ;Apaga todos os itens da pilha
+nop
+nop
+nop
+nop
+nop
 pop dword ebp       ;Restaura o valor de ebp
+nop
+nop
+nop
+nop
+nop
+nop
 ret 4
+nop
+nop
+nop
+nop

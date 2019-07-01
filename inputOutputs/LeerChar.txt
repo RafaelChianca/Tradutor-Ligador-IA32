@@ -1,10 +1,48 @@
 LeerChar: push dword ebp      ;Salva o valor de ebp na pilha
+nop
+nop
+nop
+nop
+nop
+nop
 mov ebp, esp	    ;Copia o valor da posição de esp para ebp
+nop
+nop
+nop
+nop
+nop
 mov edx, 1          ;Quantos caracteres serão lidos
+nop
+nop
 mov ecx, [ebp+8]    ;O endereço de onde será escrito o caracter digitado
+nop
+nop
+nop
+nop
 mov ebx, 0          ;Descritor do arquivo (stdin)
+nop
+nop
 mov eax, 3          ;Chamada do sistema 3 (sys_read)
+nop
+nop
 int 80h             ;Chamada do kernel
+nop
+nop
+nop
+nop
+nop
 pop dword ebp       ;Restaura o valor de ebp
+nop
+nop
+nop
+nop
+nop
+nop
 mov dword eax, 1    ;Bota em eax a quantidade de caracteres lidos
+nop
+nop
 ret 4
+nop
+nop
+nop
+nop

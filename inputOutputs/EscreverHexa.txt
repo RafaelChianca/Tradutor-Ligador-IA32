@@ -1,19 +1,89 @@
 EscreverHexa:  enter 0,0
-  mov dword ebx, [ebp+8] ;copia o endereço para ebx
-  push dword 0	;Bota 0 no contador de caracteres impressos
-
+nop
+nop
+nop
+mov dword ebx, [ebp+8] ;copia o endereço para ebx
+nop
+nop
+nop
+nop
+push dword 0	;Bota 0 no contador de caracteres impressos
+nop
+nop
+nop
+nop
+nop
 loop3: push ebx ;salva o endereço
-  push ebx ;endereço que está o char
-  call EscreverCharSemEnter
-  pop ebx ;recupera o endereço
-  add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
-  cmp byte [ebx], 0xA
-  je  FimDoHexa
-  add ebx, 0x1 ; aumenta em 1B
-  loop loop3 ;se não for 0 pula
-  add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
-  call EscreveEnter		  ;Escreve o enter no final da impressão
-
+nop
+nop
+nop
+nop
+nop
+nop
+push ebx ;endereço que está o char
+nop
+nop
+nop
+nop
+nop
+nop
+call EscreverCharSemEnter
+nop
+nop
+pop ebx ;recupera o endereço
+nop
+nop
+nop
+nop
+nop
+nop
+add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
+nop
+nop
+nop
+cmp byte [ebx], 0xA
+nop
+nop
+nop
+nop
+je  FimDoHexa
+nop
+nop
+nop
+nop
+nop
+add ebx, 0x1 ; aumenta em 1B
+nop
+nop
+nop
+nop
+loop loop3 ;se não for 0 pula
+nop
+nop
+nop
+nop
+nop
+add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
+nop
+nop
+nop
+call EscreveEnter		  ;Escreve o enter no final da impressão
+nop
+nop
 FimDoHexa: mov eax, [esp] ;quantidade escrita
-  leave
-  ret 8
+nop
+nop
+nop
+nop
+leave
+nop
+nop
+nop
+nop
+nop
+nop
+ret 8
+nop
+nop
+nop
+nop

@@ -166,9 +166,14 @@ void read_input_output(node_t* ia_32_head, int* inputOutputFlags) {
             if (fp != NULL && ia_32_fp != NULL) {
                 while ((getline(&line, &len, fp)) != -1) {
                     token = strtok(line, ";");
-                    if (strcmp(line, "\n") != 0) {
-                        strcat(token, "\n");
-                        fputs(token, ia_32_fp);
+                    if (strcmp(line, "\n") != 0 && strcmp(line, "nop\n") != 0) {
+                        if(token != NULL) {
+                            fprintf(ia_32_fp, "%s\n", token);
+                        }
+                    }
+                    else if(strcmp(line, "nop\n") == 0) {
+                        fprintf(ia_32_fp, "%s", token);
+
                     }
                 }
             }

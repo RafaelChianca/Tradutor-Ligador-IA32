@@ -1,22 +1,108 @@
-EscreverString:  enter 0,0
-  mov dword ebx, [ebp+12] ;copia o endereço para ebx
-  mov dword ecx, [ebp+8] ;copia o tamanho máximo
-  push dword 0	;Bota 0 no contador de caracteres impressos
-loop3:
-  push ecx ;salva o contador
-  push ebx ;salva o endereço
-  push ebx ;endereço que está o char
-  call EscreverCharSemEnter
-  pop ebx ;recupera o endereço
-  pop ecx ;recupera o contador
-  add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
-  cmp byte [ebx], 0xA
-  je  FimDaString
-  add ebx, 0x1 ; aumenta em 1B
-  loop loop3 ;se não for 0 pula
-  add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
-  call EscreveEnter		  ;Escreve o enter no final da impressão
-
+EscreverString:enter 0,0
+nop
+nop
+nop
+mov dword ebx, [ebp+12] ;copia o endereço para ebx
+nop
+nop
+nop
+nop
+mov dword ecx, [ebp+8] ;copia o tamanho máximo
+nop
+nop
+nop
+nop
+push dword 0	;Bota 0 no contador de caracteres impressos
+nop
+nop
+nop
+nop
+nop
+loop3: push ecx ;salva o contador
+nop
+nop
+nop
+nop
+nop
+nop
+push ebx ;salva o endereço
+nop
+nop
+nop
+nop
+nop
+nop
+push ebx ;endereço que está o char
+nop
+nop
+nop
+nop
+nop
+nop
+call EscreverCharSemEnter
+nop
+nop
+pop ebx ;recupera o endereço
+nop
+nop
+nop
+nop
+nop
+nop
+pop ecx ;recupera o contador
+nop
+nop
+nop
+nop
+nop
+nop
+add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
+nop
+nop
+nop
+cmp byte [ebx], 0xA
+nop
+nop
+nop
+nop
+je  FimDaString
+nop
+nop
+nop
+nop
+nop
+add ebx, 0x1 ; aumenta em 1B
+nop
+nop
+nop
+nop
+loop loop3 ;se não for 0 pula
+nop
+nop
+nop
+nop
+nop
+add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
+nop
+nop
+nop
+call EscreveEnter		;Escreve o enter no final da impressão
+nop
+nop
 FimDaString: mov eax, [esp] ;quantidade escrita
-  leave
-  ret 8
+nop
+nop
+nop
+nop
+leave
+nop
+nop
+nop
+nop
+nop
+nop
+ret 8
+nop
+nop
+nop
+nop

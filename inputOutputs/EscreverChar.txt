@@ -1,12 +1,57 @@
 EscreverChar: push dword ebp            ;Salva o valor de ebp na pilha
+nop
+nop
+nop
+nop
+nop
+nop
 mov ebp, esp			  ;Copia o valor da posição de esp para ebp
+nop
+nop
+nop
+nop
+nop
 mov eax, [ebp+8]          ;Coloca o conteúdo de ebp+8 em eax (endereço do conteudo a ser impresso)
+nop
+nop
+nop
+nop
 mov edx, 1                ;Quantos caracteres serão impressos
+nop
+nop
 mov dword ecx, eax        ;O que será impresso (eax contem o endereço do conteúdo)
+nop
+nop
+nop
+nop
+nop
 mov ebx, 1                ;Descritor do arquivo (stdout)
+nop
+nop
 mov eax, 4                ;Número de chamada do sistema (sys_write)
+nop
+nop
 int 0x80                  ;Chamada do kernel
+nop
+nop
+nop
+nop
+nop
 call EscreveEnter		  ;Escreve o enter no final da impressão
+nop
+nop
 pop dword ebp			  ;Restaura o valor de ebp
+nop
+nop
+nop
+nop
+nop
+nop
 mov dword eax, 2          ;Retorna a quantidade de caracteres impressos em eax (1 caracter + 0xA)
+nop
+nop
 ret 4				      ;desenpilha o retorno para o PC e o argumento (numero que foi impresso)
+nop
+nop
+nop
+nop

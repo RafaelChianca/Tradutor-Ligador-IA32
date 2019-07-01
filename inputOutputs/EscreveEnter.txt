@@ -1,13 +1,70 @@
 EscreveEnter: push dword ebp            ;Salva o valor de ebp na pilha
+nop
+nop
+nop
+nop
+nop
+nop
 mov ebp, esp			  ;Copia o valor da posição de esp para ebp
+nop
+nop
+nop
+nop
+nop
 push dword 0xA	  		  ;Bota o caracter 'enter' na pilha (ebp-4)
+nop
+nop
+nop
+nop
+nop
 mov dword eax, ebp		  ;Bota o endereço de ebp em eax
+nop
+nop
+nop
+nop
+nop
 sub dword eax, 4          ;Posiciona o conteudo de eax para apontar para '0xA' (enter)
+nop
+nop
+nop
+nop
 mov edx, 1                ;Quantos caracteres serão impressos
+nop
+nop
 mov dword ecx, eax        ;O que será impresso (eax contem o endereço do conteúdo)
+nop
+nop
+nop
+nop
+nop
 mov ebx, 1                ;Descritor do arquivo (stdout)
+nop
+nop
 mov eax, 4                ;Número de chamada do sistema (sys_write)
+nop
+nop
 int 0x80                  ;Chamada do kernel
+nop
+nop
+nop
+nop
+nop
 add dword esp, 4		  ;Desenpilha o '0xA'
+nop
+nop
+nop
+nop
 pop dword ebp			  ;Restaura o valor de ebp
+nop
+nop
+nop
+nop
+nop
+nop
 ret
+nop
+nop
+nop
+nop
+nop
+nop

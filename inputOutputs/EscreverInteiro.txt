@@ -1,55 +1,279 @@
 EscreverInteiro: push dword ebp            ;Salva o valor de ebp na pilha
+nop
+nop
+nop
+nop
+nop
+nop
 mov ebp, esp			  ;Copia o valor da posição de esp para ebp
+nop
+nop
+nop
+nop
+nop
 mov eax, [ebp+8]          ;Coloca o conteúdo de ebp+8 em eax (endereço do conteudo a ser impresso)
+nop
+nop
+nop
+nop
 mov eax, [eax]            ;Coloca o numero a ser impresso em eax
+nop
+nop
+nop
+nop
+nop
 sub ebx, ebx              ;Zera o contador ebx
+nop
+nop
+nop
+nop
+nop
 push dword ebx            ;Bota ebx na pilha (quantidade de elementos que foram impressos)
+nop
+nop
+nop
+nop
+nop
+nop
 cdq                       ;Extende o sinal de eax em edx
+nop
+nop
+nop
+nop
+nop
+nop
 cmp edx, 0                ;Analisa se o número é negativo
+nop
+nop
+nop
+nop
 je GetNumPortionToPrint
+nop
+nop
+nop
+nop
+nop
 xor dword eax, 0xFFFFFFFF ;Faz o 'Ou' exclusivo, removendo o negativo
+nop
+nop
+nop
+nop
 add dword eax, 1          ;Soma 1 para ter o numero positivo equivalente ao negativo
+nop
+nop
+nop
+nop
 push dword eax            ;Salva o numero transformado em positivo na pilha
+nop
+nop
+nop
+nop
+nop
+nop
 mov dword edx, 45         ;Coloca o '-' no edx
+nop
+nop
 push dword edx            ;Bota o '-' na pilha
+nop
+nop
+nop
+nop
+nop
+nop
 mov dword eax, ebp        ;Bota o endereço de ebp em eax
+nop
+nop
+nop
+nop
+nop
 sub dword eax, 12         ;Subtrai 12 de eax, fazendo com que em eax fique o endereço do item '45' (-)
+nop
+nop
+nop
+nop
 mov edx, 1                ;Quantos caracteres serão impressos
+nop
+nop
 mov dword ecx, eax        ;O que será impresso (eax contem o endereço do conteúdo '-')
+nop
+nop
+nop
+nop
+nop
 mov ebx, 1                ;Descritor do arquivo (stdout)
+nop
+nop
 mov eax, 4                ;Número de chamada do sistema (sys_write)
+nop
+nop
 int 0x80                  ;Chamada do kernel
+nop
+nop
+nop
+nop
+nop
 add dword esp, 4          ;Remove o edx da pilha
+nop
+nop
+nop
+nop
 pop dword eax             ;Restaura o valor de eax
+nop
+nop
+nop
+nop
+nop
+nop
 add dword [ebp-4], 1    ;Adiciona 1 no contador de itens impressos
+nop
+nop
+nop
 sub ebx, ebx              ;Zera o contador ebx
-
+nop
+nop
+nop
+nop
+nop
 GetNumPortionToPrint: add ebx, 4                ;Adiciona em ebx para saber qntos itens irao para a pilha
+nop
+nop
+nop
+nop
 mov ecx, 10               ;Coloca 10 no divisor
+nop
+nop
 cdq                       ;Extende o sinal de eax em edx
+nop
+nop
+nop
+nop
+nop
+nop
 div dword ecx             ;Divide o numero por 10
+nop
+nop
+nop
+nop
+nop
 push dword edx            ;Coloca o remainder na pilha
+nop
+nop
+nop
+nop
+nop
+nop
 cmp eax, 0                ;Verifica se o número já foi colocado na pilha por completo
+nop
+nop
+nop
+nop
 jg GetNumPortionToPrint   ;Faz o loop até que todos os digitos estejam na pilha individualmente
-
-printNumberByNumber:
-add dword [ebp - 4], 1    ;Adiciona 1 no contador de itens impressos
+nop
+nop
+nop
+nop
+nop
+printNumberByNumber: add dword [ebp - 4], 1    ;Adiciona 1 no contador de itens impressos
+nop
+nop
+nop
 sub dword ebx, 4          ;Subtrai 4 do contador (4 bytes)
+nop
+nop
+nop
+nop
 pop dword eax             ;Pega o primeiro item a ser impresso
+nop
+nop
+nop
+nop
+nop
+nop
 push dword ebx            ;Salva o contador na pilha
+nop
+nop
+nop
+nop
+nop
+nop
 add dword  eax, 48 	      ;transforma em char numérico (soma 0x30) no conteudo a ser impresso
+nop
+nop
+nop
+nop
 push dword eax            ;Bota o endereço do próximo item a ser impresso na pilha
+nop
+nop
+nop
+nop
+nop
+nop
 mov edx, 1                ;Quantos caracteres serão impressos
+nop
+nop
 mov dword ecx, esp        ;O que será impresso (esp está apontando para o endereço do conteúdo)
+nop
+nop
+nop
+nop
+nop
 mov ebx, 1                ;Descritor do arquivo (stdout)
+nop
+nop
 mov eax, 4                ;Número de chamada do sistema (sys_write)
+nop
+nop
 int 0x80                  ;Chamada do kernel
+nop
+nop
+nop
+nop
+nop
 add dword esp, 4          ;Apaga o conteudo impresso da pilha
+nop
+nop
+nop
+nop
 pop dword ebx             ;Restaura o contador de itens da pilha
+nop
+nop
+nop
+nop
+nop
+nop
 cmp ebx, 0                ;Verifica se já foram todos os itens
+nop
+nop
+nop
+nop
 jne printNumberByNumber   ;Caso ainda não tenha ido todos, volta para o loop
+nop
+nop
+nop
+nop
+nop
 call EscreveEnter		  ;Escreve o enter no final da impressão
+nop
+nop
 pop dword eax             ;Bota em eax a quantidade de itens impressos
+nop
+nop
+nop
+nop
+nop
+nop
 add dword eax, 1		  ;Soma o '0xA' que foi impresso no final
+nop
+nop
 pop dword ebp			  ;Restaura o valor de ebp
+nop
+nop
+nop
+nop
+nop
+nop
 ret 4				      ;desenpilha o retorno para o PC e o argumento (numero que foi impresso)
+nop
+nop
+nop
+nop

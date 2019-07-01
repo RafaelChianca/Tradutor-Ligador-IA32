@@ -1,24 +1,112 @@
 LerHexa: enter 4,0
+nop
+nop
+nop
 mov dword [ebp-4], 0; zera o contador
 mov dword ebx, [ebp+8]; copia o endereço para ebx
-
+nop
+nop
+nop
+nop
 LeituraHexaLoop: push ebx ;salva o endereço
+nop
+nop
+nop
+nop
+nop
+nop
 push ebx ;endereço de retorno do char
+nop
+nop
+nop
+nop
+nop
+nop
 call LeerChar
+nop
+nop
 pop ebx ;recupera o endereço
+nop
+nop
+nop
+nop
+nop
+nop
 cmp dword [ebx], 0xA ;Analisa se acabou a digitação (foi digitado um 'enter')
+nop
+nop
+nop
+nop
 je FimLeituraHexa
+nop
+nop
+nop
+nop
+nop
 add dword [ebp-4], 0x1 ;Adiciona 1 ao contador de caracteres lidos
+nop
+nop
+nop
 cmp dword [ebx], 0x40  ;Analisa se o numero é superior (A,B,C,D,E,F)
+nop
+nop
+nop
+nop
 jb  DigitoNumerico
+nop
+nop
+nop
+nop
+nop
 add dword ebx, 0x1 ;aumenta o endereço em 1B
+nop
+nop
+nop
+nop
 cmp dword [ebp-4], 0x9 ;limite máximo estabelecido pelo usuário
+nop
+nop
+nop
 jb LeituraHexaLoop
+nop
+nop
+nop
+nop
+nop
 DigitoNumerico: sub dword [ebx], 0x30 ;Transforma de char em numero
+nop
+nop
+nop
+nop
 add dword ebx, 0x1 ;aumenta o endereço em 1B
+nop
+nop
+nop
+nop
 cmp dword [ebp-4], 0x9 ;limite máximo estabelecido pelo usuário
+nop
+nop
+nop
 jb LeituraHexaLoop
-
+nop
+nop
+nop
+nop
+nop
 FimLeituraHexa: mov eax, dword[ebp-4] ; move a quantidade lida para eax
+nop
+nop
+nop
+nop
 leave
+nop
+nop
+nop
+nop
+nop
+nop
 ret 8 ;elimina o endereço que foi gravado da pilha
+nop
+nop
+nop
+nop
