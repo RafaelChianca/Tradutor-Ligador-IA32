@@ -1,5 +1,0 @@
-SECTION TEXT
-SUB     A
-OUTPUT  R
-ADD     A
-STOP

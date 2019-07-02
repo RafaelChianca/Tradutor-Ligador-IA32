@@ -3,6 +3,7 @@
   #include <stdlib.h>
   #include <stdio.h>
   #include <string.h>
+  #include <math.h>
 #endif
 
 #ifndef MOUNT_H_
@@ -17,147 +18,91 @@
 
 
 void mountProgram(node_t *head, char *filename) {
-    node_t *label_head;
-    char *directives[] = {"SECTION", "CONST", "EQU", "IF", "MACRO", "END", "SPACE"};
-    char addr[MAXCN], opcode_buffer[MAXCN], buffer[MAXCN];
-    char line[5][MAXCN] = {{0}};
-    node_t *current = head->next, *previous = head;
-    int spaces = 0, i, count;
-    int label_flag = 0, opcode_value = 0, directive_flag = 0, op2_flag = 0;
-    FILE *fp, *pre_processed;
-    char *temp;
+    FILE *fp, *fp_obj;
+    node_t *current = head->next;
+    char *temp, filename_buffer[MAXCN], *instruction, instruction_aux[100];
+    char addr[10];
+    int addr_count = -14, text_flag = 0, addr_label, offset;
+    char *line;
+    size_t len = 0;
 
-    label_head = initializeList(label_head);
 
-    while(current != NULL) {
-        directive_flag = inVector(current->opcode, directives, 7);
-        strcpy(line[0], current->label);
+    strcpy(filename_buffer, filename);
 
-        /*IT'S NOT EMPTY AND IT'S NOT A DIRECTIVE*/
-        if (current->op1 && !directive_flag) {
-            label_flag = isLabelInList(current->op1, label_head, 0);
+    temp = strchr(filename_buffer, '.');
+    *temp = '\0';
 
-            count = current->count;
+    strcat(filename_buffer, ".o");
 
-            /*CASE COPY*/
-            if (current->op2) {
-                op2_flag = isLabelInList(current->op2, label_head, 0);
-                if (op2_flag != -1) {
-                    strcpy(line[2], current->op1);
-                    strcpy(line[3], current->op2);
-                    memset(current->op2, 0, sizeof(current->op2));
-                    /*TURN THE ADDRESS NUMBER INTO A STRING*/
-                    sprintf(addr, "%d", op2_flag);
-                    strcpy(current->op2, addr);
+    fp = fopen("aux.s", "r");
+    fp_obj = fopen(filename_buffer, "w");
+
+    if(fp != NULL && fp_obj != NULL) {
+        while ((getline(&line, &len, fp)) != -1) {
+            if(strstr(line, ".text")){
+                text_flag = 1;
+            }
+            if(text_flag == 1) {
+                if(!strstr(line, "nop") && strcmp(line, "\n") != 0) {
+                    addr_count+=7;
+                    strcpy(instruction_aux, line);
+                    strtok(instruction_aux, ";");
+                    instruction = strtok(NULL, ";");
+                    if(instruction == NULL)
+                        continue;
+                    strcpy(instruction_aux, instruction);
+                    addr_label = isLabelInFile(line);
+                    if(addr_label != -1) {
+                        offset = 0x08048080 + addr_count - 2;
+                        offset = addr_label - offset;
+                        offset = bigToLittleEndian(offset);
+                        sprintf(addr, "%x", offset);
+                        temp = strchr(instruction_aux, '\n');
+                        *temp = '\0';
+                        strcat(instruction_aux, addr);
+                    }
+                    if(instruction_aux != NULL)
+                        fprintf(fp_obj, "%s\n", instruction_aux);
                 }
             }
-
-            if (label_flag != -1) {
-                /*TURN THE ADDRESS NUMBER INTO A STRING*/
-                sprintf(addr, "%d", label_flag);
-                strcpy(line[2], current->op1);
-                strcpy(line[3], current->op2);
-                memset(current->op1, 0, sizeof(current->op1));
-                strcpy(current->op1, addr);
-            }
-            opcode_value = getOpcode(current->opcode);
-            // TRADES OPCODE FOR ITS VALUE
-            if (opcode_value != -1) {
-                strcpy(line[0], current->label);
-                strcpy(line[1], current->opcode);
-                memset(current->opcode, 0, sizeof(current->opcode));
-                /*TURN THE OPCODE VALUE INTO A STRING*/
-                sprintf(opcode_buffer, "%d", opcode_value);
-                strcpy(current->opcode, opcode_buffer);
-            }
         }
-        /*CASE SPACE*/
-        else if (strcmp(current->opcode, "SPACE") == 0) {
-            spaces = atoi(current->op1);
-            count = current->count;
-            strcpy(line[1], current->opcode);
-            strcpy(line[2], current->op1);
-            strcpy(line[3], current->op2);
-            memset(current->op1, 0, sizeof(current->op1));
-            strcpy(current->opcode, "00");
-
-            for (i = 1; i < spaces; i++) {
-                strcat(current->opcode, "\n\n");
-                // sprintf(buffer, "%d", current->address+i);
-                strcat(current->opcode, buffer);
-                strcat(current->opcode, "\t00");
-            }
-        }
-
-        /*CASE END*/
-        else if (strcmp(current->opcode, "END") == 0) {
-            count = current->count;
-            current = deleteNode(head, current->count);
-        }
-        else if (current->op1 && directive_flag) {
-            /* CASE IF */
-            count = current->count;
-            if (strcmp(current->opcode, "IF") == 0) {
-                label_flag = isLabelInList(current->op1, label_head, 1);
-                /* DELETE IF LINE*/
-                current = deleteNode(head, current->count);
-                if (label_flag == 0) {
-                    /* DELETE NEXT LINE */
-                    current = deleteNode(head, current->next->count);
-                }
-            }
-            /*CASE CONST*/
-            else if (strcmp(current->opcode, "CONST") == 0) {
-                count = current->count;
-                strcpy(line[1], current->opcode);
-                strcpy(line[2], current->op1);
-                strcpy(line[3], current->op2);
-                memset(current->opcode, 0, sizeof(current->opcode));
-                strcpy(current->opcode, current->op1);
-                memset(current->op1, 0, sizeof(current->op1));
-            }
-            /*CASE EQU AND SECTION*/
-            else if (strcmp(current->opcode, "EQU") == 0) {
-                count = current->count;
-                current = deleteNode(head, current->count);
-            }
-            else if (strcmp(current->opcode, "SECTION") == 0) {
-                strcpy(line[0], current->opcode);
-                strcpy(line[1], current->op1);
-                strcpy(line[2], current->op2);
-                count = current->count;
-                current = deleteNode(head, current->count);
-            }
-        }
-
-        count = 0;
-        memset(current->label, 0, sizeof(current->label));
-        memset(line, 0, sizeof(line[0][0]) * 5 * MAXCN);
-        previous = current;
-        current = current->next;
     }
 
-    deleteList(label_head);
+    fclose(fp);
+    fclose(fp_obj);
 
 }
 
+int bigToLittleEndian(int little_endian) {
+    return (((little_endian & 0x000000FF) << 24) |
+            ((little_endian & 0x0000FF00) <<  8) |
+            ((little_endian & 0x00FF0000) >>  8) |
+            ((little_endian & 0xFF000000) >> 24));
+}
 
-/*CHECK IF LABEL WAS DEFINED*/
-int isLabelInList(char* label, node_t* head, int case_if) {
-    node_t *current = head->next;
-    while(current != NULL) {
-        /*FOUND LABEL DEFINITION -> RETURN ITS ADDRS*/
-        if(strcmp(current->label, label) == 0) {
-            if(!case_if) {
-                // return current->address;
-            }
-            else {
-                return atoi(current->op1);
+
+/*Check if label was defined and returns its address*/
+int isLabelInFile(char* instruction) {
+    FILE *fp;
+    int integer;
+    char *line, *label, *addr, aux[100];
+    size_t len = 0;
+    fp = fopen("labels.txt", "r");
+
+    if(fp != NULL) {
+        while ((getline(&line, &len, fp)) != -1) {
+            label = strtok(line, ";");
+            strcpy(aux, label);
+            addr = strtok(NULL, ";");
+            strcat(aux, "\t;");
+            if(strstr(instruction, aux)) {
+                integer = (int)strtol(addr, NULL, 16);
+                return integer;
             }
         }
-        current = current->next;
+        return -1;
     }
-    return -1;
+
 }
 
 void makeLabelAddrFile() {
@@ -183,8 +128,6 @@ void makeLabelAddrFile() {
                 } else if(strstr(line, ".data")) {
                     line_count = -7;
                 }
-                // printf("%s%x\n", line, line_count);
-                // getchar();
             }
             token = strchr(line, ':');
             if (strcmp(line, "\n") != 0) {
@@ -203,19 +146,6 @@ void makeLabelAddrFile() {
     fclose(fp_label_addr);
 }
 
-int getOpcode (char *mneumonic) {
-    char *opcode[] = {"ADD","SUB","MULT","DIV","JMP","JMPN","JMPP","JMPZ","COPY","LOAD","STORE","INPUT","OUTPUT","STOP","C_INPUT","C_OUTPUT","H_INPUT","H_OUTPUT","S_INPUT","S_OUTPUT"};
-    int i;
-
-    for (i = 0; i < 20; i++) {
-        if (strcmp(opcode[i], mneumonic) == 0) {
-            return i+1;
-        }
-    }
-
-    return -1;
-
-}
 
 void writeFile (node_t *head, char *filename) {
     FILE *fp_aux, *fp_org;
@@ -254,11 +184,12 @@ void writeFile (node_t *head, char *filename) {
             }
             else {
                 fprintf(fp_org, "%s\t", current->op1);
-                fprintf(fp_aux, "%s\t", current->op1);
+                fprintf(fp_aux, "%s", current->op1);
             }
             fprintf(fp_org, "%s", current->op2);
             fprintf(fp_aux, "%s", current->op2);
             fprintf(fp_org, "\n");
+            fprintf(fp_aux, "\t;%s", current->address);
             fprintf(fp_aux, "\n");
             for (i = 0; i < current->count; i++) {
                 fprintf(fp_aux, "nop\n");

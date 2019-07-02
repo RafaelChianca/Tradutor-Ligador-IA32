@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
 
     readInputOutput(ia_32_head, inputOutputsFlags, argv[1]);
     makeLabelAddrFile();
+    mountProgram(ia_32_head, argv[1]);
 
     deleteList(ia_32_head);
 
