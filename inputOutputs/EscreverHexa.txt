@@ -13,7 +13,7 @@ nop
 nop
 nop
 nop
-loop3: push ebx ;salva o endereço
+loopHex: push ebx ;salva o endereço
 nop
 nop
 nop
@@ -57,7 +57,7 @@ nop
 nop
 nop
 nop
-loop loop3 ;se não for 0 pula
+loop loopHex ;se não for 0 pula
 nop
 nop
 nop

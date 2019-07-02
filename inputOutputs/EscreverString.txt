@@ -18,7 +18,7 @@ nop
 nop
 nop
 nop
-loop3: push ecx ;salva o contador
+loopString: push ecx ;salva o contador
 nop
 nop
 nop
@@ -76,7 +76,7 @@ nop
 nop
 nop
 nop
-loop loop3 ;se não for 0 pula
+loop loopString ;se não for 0 pula
 nop
 nop
 nop

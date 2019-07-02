@@ -73,6 +73,7 @@ nop
 sub dword [ebp-4], 1  ;Remove do contador de caracteres lido o '-' (para evitar problemas no loop TransformaEmInteiro, é readicionado essa quantidade futuramente)
 nop
 nop
+nop
 LeituraInteiroLoop: mov dword eax, esp  ;Bota em eax o endereço de esp
 nop
 nop

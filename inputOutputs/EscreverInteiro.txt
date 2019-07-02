@@ -265,6 +265,8 @@ nop
 add dword eax, 1		  ;Soma o '0xA' que foi impresso no final
 nop
 nop
+nop
+nop
 pop dword ebp			  ;Restaura o valor de ebp
 nop
 nop

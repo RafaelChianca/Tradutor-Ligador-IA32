@@ -1,5 +1,5 @@
 section	.data
-TRIANGULO:	equ	1
+TRIANGULO:	dd	1
 B:	dd	0
 H:	dd	0
 R:	dd	0
@@ -9,164 +9,1410 @@ global	_start
 section	.text
 _start:
 push dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
 push dword	B
+nop
+nop
 call	LeerInteiro
+nop
+nop
 pop dword	eax
-
+nop
+nop
+nop
+nop
+nop
+nop
 push dword	eax
-push dword	H
-call	LeerInteiro
-pop dword	eax
-
-mov dword	eax,	[B]
-imul dword	[H]
-cmp dword	[UM],	1
-jne	jump
-idiv dword	[DOIS]
-jump:	mov dword	[R],	eax
-
-push dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
 push dword	R
+nop
+nop
 call	EscreverInteiro
+nop
+nop
 pop dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
+push dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
+push dword	B
+nop
+nop
+call	LeerChar
+nop
+nop
+mov dword	ebx,	esp
+nop
+nop
+nop
+nop
+nop
+sub dword	ebx,	4
+nop
+nop
+nop
+nop
+push dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
+push dword	R
+nop
+nop
+call	EscreverChar
+nop
+nop
+pop dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
+push dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
+push dword	B
+nop
+nop
+call	LerHexa
+nop
+nop
+pop dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
+push dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
+push dword	R
+nop
+nop
+call	EscreverHexa
+nop
+nop
+pop dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
+push dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
+push dword	UM
+nop
+nop
+push dword	[R]
+nop
+call	LeerString
+nop
+nop
+pop dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
+push dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
+push dword	R
+nop
+nop
+push dword	[H]
+nop
+call	EscreverString
+nop
+nop
+pop dword	eax
+nop
+nop
+nop
+nop
+nop
+nop
 
-mov	eax,	1
-mov	ebx,	0
-int 80h
-
-LeerInteiro: push dword ebp      ;Salva o valor de ebp na pilha
-mov ebp, esp	    ;Copia o valor da posição de esp para ebp
-push dword 0        ;Reserva espaço na pilha para o contador de caracteres lidos (ebp-4)
-push dword 0        ;Reserva na pilha espaço para a flag se o número é negativo (0 - positivo, 1 - negativo) (ebp-8)
-mov dword eax, esp  ;Bota em eax o endereço de esp
-sub dword eax, 4    ;Posiciona eax para a próxima posição da pilha
-push dword 0        ;Bota zero no conteudo da pilha esp-4
-push dword eax      ;bota na pilha o endereço da próxima posição (que é exatamente esp-4), em esp-8
+LeerInteiro: push dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
+mov ebp, esp
+nop
+nop
+nop
+nop
+nop
+push dword 0
+nop
+nop
+nop
+nop
+nop
+push dword 0
+nop
+nop
+nop
+nop
+nop
+mov dword eax, esp
+nop
+nop
+nop
+nop
+nop
+sub dword eax, 4
+nop
+nop
+nop
+nop
+push dword 0
+nop
+nop
+nop
+nop
+nop
+push dword eax
+nop
+nop
+nop
+nop
+nop
+nop
 call LeerChar
-add dword [ebp-4], 1 ;Adiciona 1 ao contador de caracteres lidos
-cmp dword [esp], 45       ;Analisa se o numero é negativo ('-' no inicio)
+
+nop
+nop
+add dword [ebp-4], 1
+nop
+nop
+nop
+cmp dword [esp], 45
+nop
+nop
+nop
 jne LeituraInteiroLoop
-mov dword [ebp-8], 1  ;Número negativo
-add dword esp, 4      ;Remove o caracter '-' da pilha
-sub dword [ebp-4], 1  ;Remove do contador de caracteres lido o '-' (para evitar problemas no loop TransformaEmInteiro, é readicionado essa quantidade futuramente)
- ;Loop para ler o inteiro até o enter
-LeituraInteiroLoop: mov dword eax, esp  ;Bota em eax o endereço de esp
-sub dword eax, 4    ;Posiciona eax para a próxima posição da pilha
-push dword 0        ;Bota zero no conteudo da pilha esp-4
-push dword eax      ;bota na pilha o endereço da próxima posição (que é exatamente esp-4), em esp-8
+
+nop
+nop
+nop
+nop
+nop
+mov dword [ebp-8], 1
+add dword esp, 4
+nop
+nop
+nop
+nop
+sub dword [ebp-4], 1
+nop
+nop
+nop
+LeituraInteiroLoop: mov dword eax, esp
+nop
+nop
+nop
+nop
+nop
+sub dword eax, 4
+nop
+nop
+nop
+nop
+push dword 0
+nop
+nop
+nop
+nop
+nop
+push dword eax
+nop
+nop
+nop
+nop
+nop
+nop
 call LeerChar
-add dword [ebp-4], 1 ;Adiciona 1 ao contador de caracteres lidos
-cmp dword [esp], 0xA       ;Analisa se acabou a digitação (foi digitado um 'enter')
-jne LeituraInteiroLoop  ;Caso ainda não tenha sido um enter
-add dword esp, 4      ;Remove o enter da pilha
-mov dword eax, 1      ;Coloca 1 no multiplicador numérico
-mov dword ecx, [ebp-4]  ;Bota em ecx a quantidade de caracteres lido
-sub dword ecx, 1      ;Remove o 'enter' lido
-mov dword edx, [ebp+8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
-mov dword [edx], 0 ;Bota ZERO no conteudo da variavel que será colocado a leitura do inteiro
 
-TransformaEmInteiro: pop dword ebx       ;Bota o caracter lido em ebx (do último para o primeiro)
-sub dword ecx, 1    ;Subtrai 1 do contador de inteiros
-sub dword ebx, 0x30 ;Transforma de char em numero
-push dword eax      ;Salva o conteudo de eax na pilha
-imul dword ebx      ;Ajusta a posição do caracter no inteiro
-mov dword edx, [ebp+8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
-add dword [edx], eax  ;Salva no conteudo da variavel o valor já convertido para inteiro
-pop dword eax     ;Restaura o valor de eax
-mov dword ebx, 10 ;Bota o numero 10 em ebx
-imul dword ebx    ;Multiplica eax por 10
-cmp dword ecx, 0  ;Caso ja tenha lido todos os caracteres
+nop
+nop
+add dword [ebp-4], 1
+nop
+nop
+nop
+cmp dword [esp], 0xA
+nop
+nop
+nop
+jne LeituraInteiroLoop
+nop
+nop
+nop
+nop
+nop
+add dword esp, 4
+nop
+nop
+nop
+nop
+mov dword eax, 1
+nop
+nop
+mov dword ecx, [ebp-4]
+nop
+nop
+nop
+nop
+sub dword ecx, 1
+nop
+nop
+nop
+nop
+mov dword edx, [ebp+8]
+nop
+nop
+nop
+nop
+mov dword [edx], 0
+nop
+TransformaEmInteiro: pop dword ebx
+nop
+nop
+nop
+nop
+nop
+nop
+sub dword ecx, 1
+nop
+nop
+nop
+nop
+sub dword ebx, 0x30
+nop
+nop
+nop
+nop
+push dword eax
+nop
+nop
+nop
+nop
+nop
+nop
+imul dword ebx
+nop
+nop
+nop
+nop
+nop
+mov dword edx, [ebp+8]
+nop
+nop
+nop
+nop
+add dword [edx], eax
+nop
+nop
+nop
+nop
+nop
+pop dword eax
+nop
+nop
+nop
+nop
+nop
+nop
+mov dword ebx, 10
+nop
+nop
+imul dword ebx
+nop
+nop
+nop
+nop
+nop
+cmp dword ecx, 0
+nop
+nop
+nop
+nop
 jne TransformaEmInteiro
-cmp dword [ebp-8], 0  ;Verifica se o numero era negativo
-je  FimLeituraInteiro
-add dword [ebp-4], 1  ;Adiciona o '-' como caracter lido
-mov dword edx, [ebp+8]  ;Bota em edx o endereço da variavel que será colocado a leitura do inteiro
-sub dword [edx], 1  ;Subtrai 1 do numero inteiro
-xor dword [edx], 0xFFFFFFFF ;Faz o 'Ou' exclusivo, adicionando o negativo
 
-FimLeituraInteiro: mov dword eax, [ebp-4]    ;Bota em eax a quantidade de caracteres lidos
-mov dword esp, ebp    ;Apaga todos os itens da pilha
-pop dword ebp       ;Restaura o valor de ebp
+nop
+nop
+nop
+nop
+nop
+cmp dword [ebp-8], 0
+nop
+nop
+nop
+je  FimLeituraInteiro
+
+nop
+nop
+nop
+nop
+nop
+add dword [ebp-4], 1
+nop
+nop
+nop
+mov dword edx, [ebp+8]
+nop
+nop
+nop
+nop
+sub dword [edx], 1
+nop
+nop
+nop
+nop
+xor dword [edx], 0xFFFFFFFF
+nop
+nop
+nop
+nop
+FimLeituraInteiro: mov dword eax, [ebp-4]
+nop
+nop
+nop
+nop
+mov dword esp, ebp
+nop
+nop
+nop
+nop
+nop
+pop dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
 ret 4
 
-
+nop
+nop
+nop
+nop
 EscreverInteiro: push dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
 mov ebp, esp
+nop
+nop
+nop
+nop
+nop
 mov eax, [ebp+8]
+nop
+nop
+nop
+nop
 mov eax, [eax]
+nop
+nop
+nop
+nop
+nop
 sub ebx, ebx
+nop
+nop
+nop
+nop
+nop
 push dword ebx
+nop
+nop
+nop
+nop
+nop
+nop
 cdq
+nop
+nop
+nop
+nop
+nop
+nop
 cmp edx, 0
+nop
+nop
+nop
+nop
 je GetNumPortionToPrint
 
+nop
+nop
+nop
+nop
+nop
 xor dword eax, 0xFFFFFFFF
+nop
+nop
+nop
+nop
 add dword eax, 1
+nop
+nop
+nop
+nop
 push dword eax
+nop
+nop
+nop
+nop
+nop
+nop
 mov dword edx, 45
+nop
+nop
 push dword edx
+nop
+nop
+nop
+nop
+nop
+nop
 mov dword eax, ebp
+nop
+nop
+nop
+nop
+nop
 sub dword eax, 12
+nop
+nop
+nop
+nop
 mov edx, 1
+nop
+nop
 mov dword ecx, eax
+nop
+nop
+nop
+nop
+nop
 mov ebx, 1
+nop
+nop
 mov eax, 4
+nop
+nop
 int 0x80
+nop
+nop
+nop
+nop
+nop
 add dword esp, 4
+nop
+nop
+nop
+nop
 pop dword eax
+nop
+nop
+nop
+nop
+nop
+nop
 add dword [ebp-4], 1
+nop
+nop
+nop
 sub ebx, ebx
+nop
+nop
+nop
+nop
+nop
 GetNumPortionToPrint: add ebx, 4
+nop
+nop
+nop
+nop
 mov ecx, 10
+nop
+nop
 cdq
+nop
+nop
+nop
+nop
+nop
+nop
 div dword ecx
+nop
+nop
+nop
+nop
+nop
 push dword edx
+nop
+nop
+nop
+nop
+nop
+nop
 cmp eax, 0
+nop
+nop
+nop
+nop
 jg GetNumPortionToPrint
-printNumberByNumber:
-
-add dword [ebp - 4], 1
+nop
+nop
+nop
+nop
+nop
+printNumberByNumber: add dword [ebp - 4], 1
+nop
+nop
+nop
 sub dword ebx, 4
+nop
+nop
+nop
+nop
 pop dword eax
+nop
+nop
+nop
+nop
+nop
+nop
 push dword ebx
+nop
+nop
+nop
+nop
+nop
+nop
 add dword  eax, 48
+nop
+nop
+nop
+nop
 push dword eax
+nop
+nop
+nop
+nop
+nop
+nop
 mov edx, 1
+nop
+nop
 mov dword ecx, esp
+nop
+nop
+nop
+nop
+nop
 mov ebx, 1
+nop
+nop
 mov eax, 4
+nop
+nop
 int 0x80
+nop
+nop
+nop
+nop
+nop
 add dword esp, 4
+nop
+nop
+nop
+nop
 pop dword ebx
+nop
+nop
+nop
+nop
+nop
+nop
 cmp ebx, 0
+nop
+nop
+nop
+nop
 jne printNumberByNumber
+nop
+nop
+nop
+nop
+nop
 call EscreveEnter
+nop
+nop
 pop dword eax
+nop
+nop
+nop
+nop
+nop
+nop
 add dword eax, 1
+nop
+nop
+nop
+nop
 pop dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
 ret 4
-
+nop
+nop
+nop
+nop
 LeerChar: push dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
 mov ebp, esp
+nop
+nop
+nop
+nop
+nop
 mov edx, 1
+nop
+nop
 mov ecx, [ebp+8]
+nop
+nop
+nop
+nop
 mov ebx, 0
+nop
+nop
 mov eax, 3
+nop
+nop
 int 80h
+nop
+nop
+nop
+nop
+nop
 pop dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
 mov dword eax, 1
+nop
+nop
 ret 4
 
-EscreveEnter: push dword ebp
+nop
+nop
+nop
+nop
+EscreverChar: push dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
 mov ebp, esp
-push dword 0xA
-mov dword eax, ebp
-sub dword eax, 4
+nop
+nop
+nop
+nop
+nop
+mov eax, [ebp+8]
+nop
+nop
+nop
+nop
 mov edx, 1
+nop
+nop
 mov dword ecx, eax
+nop
+nop
+nop
+nop
+nop
 mov ebx, 1
+nop
+nop
 mov eax, 4
+nop
+nop
 int 0x80
-add dword esp, 4
+nop
+nop
+nop
+nop
+nop
+call EscreveEnter
+nop
+nop
 pop dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
+mov dword eax, 2
+nop
+nop
+ret 4
+nop
+nop
+nop
+nop
+LerHexa: enter 4,0
+
+nop
+nop
+nop
+mov dword [ebp-4], 0
+mov dword ebx, [ebp+8]
+nop
+nop
+nop
+nop
+LeituraHexaLoop: push ebx
+nop
+nop
+nop
+nop
+nop
+nop
+push ebx
+nop
+nop
+nop
+nop
+nop
+nop
+call LeerChar
+
+nop
+nop
+pop ebx
+nop
+nop
+nop
+nop
+nop
+nop
+cmp dword [ebx], 0xA
+nop
+nop
+nop
+nop
+je FimLeituraHexa
+
+nop
+nop
+nop
+nop
+nop
+add dword [ebp-4], 0x1
+nop
+nop
+nop
+cmp dword [ebx], 0x40
+nop
+nop
+nop
+nop
+jb  DigitoNumerico
+
+nop
+nop
+nop
+nop
+nop
+add dword ebx, 0x1
+nop
+nop
+nop
+nop
+cmp dword [ebp-4], 0x9
+nop
+nop
+nop
+jb LeituraHexaLoop
+
+nop
+nop
+nop
+nop
+nop
+DigitoNumerico: sub dword [ebx], 0x30
+nop
+nop
+nop
+nop
+add dword ebx, 0x1
+nop
+nop
+nop
+nop
+cmp dword [ebp-4], 0x9
+nop
+nop
+nop
+jb LeituraHexaLoop
+
+nop
+nop
+nop
+nop
+nop
+FimLeituraHexa: mov eax, dword[ebp-4]
+nop
+nop
+nop
+nop
+leave
+
+nop
+nop
+nop
+nop
+nop
+nop
+ret 8
+nop
+nop
+nop
+nop
+EscreverHexa:  enter 0,0
+
+nop
+nop
+nop
+mov dword ebx, [ebp+8]
+nop
+nop
+nop
+nop
+push dword 0
+nop
+nop
+nop
+nop
+nop
+loopHex: push ebx
+nop
+nop
+nop
+nop
+nop
+nop
+push ebx
+nop
+nop
+nop
+nop
+nop
+nop
+call EscreverCharSemEnter
+
+nop
+nop
+pop ebx
+nop
+nop
+nop
+nop
+nop
+nop
+add dword [esp], 1
+nop
+nop
+nop
+cmp byte [ebx], 0xA
+
+nop
+nop
+nop
+nop
+je  FimDoHexa
+
+nop
+nop
+nop
+nop
+nop
+add ebx, 0x1
+nop
+nop
+nop
+nop
+loop loopHex
+nop
+nop
+nop
+nop
+nop
+add dword [esp], 1
+nop
+nop
+nop
+call EscreveEnter
+nop
+nop
+FimDoHexa: mov eax, [esp]
+nop
+nop
+nop
+nop
+leave
+
+nop
+nop
+nop
+nop
+nop
+nop
+ret 8
+
+nop
+nop
+nop
+nop
+LeerString:  enter 4,0
+
+nop
+nop
+nop
+mov dword [ebp-4], 0
+mov dword ebx, [ebp+12]
+nop
+nop
+nop
+nop
+mov dword ecx, [ebp+8]
+nop
+nop
+nop
+nop
+loop2: push ecx
+nop
+nop
+nop
+nop
+nop
+nop
+push ebx
+nop
+nop
+nop
+nop
+nop
+nop
+push ebx
+nop
+nop
+nop
+nop
+nop
+nop
+call LeerChar
+
+nop
+nop
+pop ebx
+nop
+nop
+nop
+nop
+nop
+nop
+pop ecx
+nop
+nop
+nop
+nop
+nop
+nop
+add dword [ebp-4], 0x1
+nop
+nop
+nop
+cmp dword [ebx], 0x0A
+nop
+nop
+nop
+nop
+je retorno2
+
+nop
+nop
+nop
+nop
+nop
+add dword ebx, 0x1
+nop
+nop
+nop
+nop
+cmp dword [ebp-4], ecx
+nop
+nop
+nop
+nop
+jb loop2
+
+nop
+nop
+nop
+nop
+nop
+retorno2: mov eax, dword[ebp-4]
+nop
+nop
+nop
+nop
+leave
+
+nop
+nop
+nop
+nop
+nop
+nop
+ret 8
+nop
+nop
+nop
+nop
+EscreverString:enter 0,0
+
+nop
+nop
+nop
+mov dword ebx, [ebp+12]
+nop
+nop
+nop
+nop
+mov dword ecx, [ebp+8]
+nop
+nop
+nop
+nop
+push dword 0
+nop
+nop
+nop
+nop
+nop
+loopString: push ecx
+nop
+nop
+nop
+nop
+nop
+nop
+push ebx
+nop
+nop
+nop
+nop
+nop
+nop
+push ebx
+nop
+nop
+nop
+nop
+nop
+nop
+call EscreverCharSemEnter
+
+nop
+nop
+pop ebx
+nop
+nop
+nop
+nop
+nop
+nop
+pop ecx
+nop
+nop
+nop
+nop
+nop
+nop
+add dword [esp], 1
+nop
+nop
+nop
+cmp byte [ebx], 0xA
+
+nop
+nop
+nop
+nop
+je  FimDaString
+
+nop
+nop
+nop
+nop
+nop
+add ebx, 0x1
+nop
+nop
+nop
+nop
+loop loopString
+nop
+nop
+nop
+nop
+nop
+add dword [esp], 1
+nop
+nop
+nop
+call EscreveEnter
+nop
+nop
+FimDaString: mov eax, [esp]
+nop
+nop
+nop
+nop
+leave
+
+nop
+nop
+nop
+nop
+nop
+nop
+ret 8
+
+nop
+nop
+nop
+nop
+EscreveEnter: push dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
+mov ebp, esp
+nop
+nop
+nop
+nop
+nop
+push dword 0xA
+nop
+nop
+nop
+nop
+nop
+mov dword eax, ebp
+nop
+nop
+nop
+nop
+nop
+sub dword eax, 4
+nop
+nop
+nop
+nop
+mov edx, 1
+nop
+nop
+mov dword ecx, eax
+nop
+nop
+nop
+nop
+nop
+mov ebx, 1
+nop
+nop
+mov eax, 4
+nop
+nop
+int 0x80
+nop
+nop
+nop
+nop
+nop
+add dword esp, 4
+nop
+nop
+nop
+nop
+pop dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
 ret
+
+nop
+nop
+nop
+nop
+nop
+nop
+EscreverCharSemEnter: push dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
+mov ebp, esp
+nop
+nop
+nop
+nop
+nop
+mov eax, [ebp+8]
+nop
+nop
+nop
+nop
+cmp byte [eax], 0x9
+nop
+nop
+nop
+nop
+jbe SomaNumeroChar
+
+nop
+nop
+nop
+nop
+nop
+ImprimeChar: mov edx, 1
+nop
+nop
+mov dword ecx, eax
+nop
+nop
+nop
+nop
+nop
+mov ebx, 1
+nop
+nop
+mov eax, 4
+nop
+nop
+int 0x80
+nop
+nop
+nop
+nop
+nop
+pop dword ebp
+nop
+nop
+nop
+nop
+nop
+nop
+mov dword eax, 2
+nop
+nop
+ret 4
+nop
+nop
+nop
+nop
+SomaNumeroChar: add dword  [eax], 0x30
+nop
+nop
+nop
+nop
+jmp ImprimeChar
+
+nop
+nop
+nop
+nop
+nop
