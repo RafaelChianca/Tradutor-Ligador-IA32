@@ -3,4 +3,4 @@
   #include "list.h"
 #endif
 void readAsmFile (char *, node_t *);
-void read_input_output(node_t*, int*);
+void readInputOutput(node_t*, int*, char *);

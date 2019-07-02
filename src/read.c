@@ -116,71 +116,81 @@ void readAsmFile (char *filename, node_t *head) {
     fclose(asm_file);
 }
 
-void read_input_output(node_t* ia_32_head, int* inputOutputFlags) {
+void readInputOutput(node_t* ia_32_head, int* inputOutputFlags, char *filename) {
     node_t* current = ia_32_head->next;
-    FILE *fp, *ia_32_fp;
-    char *line;
-    char *token;
+    FILE *fp_org, *fp_aux, *fp_IO;
+    char *line, filename_aux[MAXCN], *token, *temp;
     char linebuffer[5][MAXCN] = {{0}};
     int i;
     size_t len = 0;
 
-    ia_32_fp = fopen("ia_32.s.txt", "a");
-    fputs("\n", ia_32_fp);
+    strcpy(filename_aux, filename);
+
+    temp = strchr(filename_aux, '.');
+    *temp = '\0';
+
+    strcat(filename_aux, ".s");
+    /*won't contain nops, only the translation.*/
+    fp_org = fopen (filename_aux, "a");
+
+    /*will contain nops in order to help count labels. Will be deleted afterwards.*/
+    fp_aux = fopen("aux.s", "a");
+
+    fputs("\n", fp_org);
+    fputs("\n", fp_aux);
 
     for (i = 0; i < 10; i++) {
         if (inputOutputFlags[i] == 1) {
             switch (i) {
                 case 0:
-                    fp = fopen ("../inputOutputs/LeerInteiro.txt", "r");
+                    fp_IO = fopen ("../inputOutputs/LeerInteiro.txt", "r");
                 break;
                 case 1:
-                    fp = fopen ("../inputOutputs/EscreverInteiro.txt", "r");
+                    fp_IO = fopen ("../inputOutputs/EscreverInteiro.txt", "r");
                 break;
                 case 2:
-                    fp = fopen ("../inputOutputs/LeerChar.txt", "r");
+                    fp_IO = fopen ("../inputOutputs/LeerChar.txt", "r");
                 break;
                 case 3:
-                    fp = fopen ("../inputOutputs/EscreverChar.txt", "r");
+                    fp_IO = fopen ("../inputOutputs/EscreverChar.txt", "r");
                 break;
                 case 4:
-                    fp = fopen ("../inputOutputs/LerHexa.txt", "r");
+                    fp_IO = fopen ("../inputOutputs/LerHexa.txt", "r");
                 break;
                 case 5:
-                    fp = fopen ("../inputOutputs/EscreverHexa.txt", "r");
+                    fp_IO = fopen ("../inputOutputs/EscreverHexa.txt", "r");
                 break;
                 case 6:
-                    fp = fopen ("../inputOutputs/LeerString.txt", "r");
+                    fp_IO = fopen ("../inputOutputs/LeerString.txt", "r");
                 break;
                 case 7:
-                    fp = fopen ("../inputOutputs/EscreverString.txt", "r");
+                    fp_IO = fopen ("../inputOutputs/EscreverString.txt", "r");
                 break;
                 case 8:
-                    fp = fopen ("../inputOutputs/EscreveEnter.txt", "r");
+                    fp_IO = fopen ("../inputOutputs/EscreveEnter.txt", "r");
                 break;
                 case 9:
-                    fp = fopen ("../inputOutputs/EscreverCharSemEnter.txt", "r");
+                    fp_IO = fopen ("../inputOutputs/EscreverCharSemEnter.txt", "r");
                 break;
             }
 
-            if (fp != NULL && ia_32_fp != NULL) {
-                while ((getline(&line, &len, fp)) != -1) {
+            if (fp_IO != NULL && fp_org != NULL && fp_aux != NULL) {
+                while ((getline(&line, &len, fp_IO)) != -1) {
                     token = strtok(line, ";");
                     if (strcmp(line, "\n") != 0 && strcmp(line, "nop\n") != 0) {
                         if(token != NULL) {
-                            fprintf(ia_32_fp, "%s\n", token);
+                            fprintf(fp_org, "%s\n", token);
+                            fprintf(fp_aux, "%s\n", token);
                         }
                     }
                     else if(strcmp(line, "nop\n") == 0) {
-                        fprintf(ia_32_fp, "%s", token);
-
+                        fprintf(fp_aux, "%s", token);
                     }
                 }
             }
-
-            fclose(fp);
+            fclose(fp_IO);
         }
     }
-    fclose(ia_32_fp);
-
+    fclose(fp_org);
+    fclose(fp_aux);
 }

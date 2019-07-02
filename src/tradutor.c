@@ -35,11 +35,12 @@ int main(int argc, char *argv[]) {
 
     readAsmFile(argv[1], head);
     ia_32_head = translate(head, ia_32_head, inputOutputsFlags);
-    writeFile(ia_32_head, "ia_32");
+    writeFile(ia_32_head, argv[1]);
+
     deleteList(head);
 
-    read_input_output(ia_32_head, inputOutputsFlags);
-    makeLabelAddrFile(argv[1]);
+    readInputOutput(ia_32_head, inputOutputsFlags, argv[1]);
+    makeLabelAddrFile();
 
     deleteList(ia_32_head);
 

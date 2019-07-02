@@ -5,6 +5,6 @@
 
 void mountProgram (node_t *, char *);
 int isLabelInList (char* , node_t*, int);
-void makeLabelAddrFile(char*);
+void makeLabelAddrFile();
 int getOpcode (char *);
 void writeFile (node_t*, char*);

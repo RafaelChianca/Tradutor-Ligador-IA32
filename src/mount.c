@@ -160,23 +160,17 @@ int isLabelInList(char* label, node_t* head, int case_if) {
     return -1;
 }
 
-void makeLabelAddrFile(char* filename) {
+void makeLabelAddrFile() {
     FILE *fp_ia_32, *fp_label_addr;
     char *temp, filename_buffer[MAXCN];
     char *line;
     char *token, count[MAXCN];
     int i, line_count = 0;
     int text_initial_addr = 0x08048080;
-
     size_t len = 0;
 
-    // strcpy(filename_buffer, filename);
-    // temp = strchr(filename_buffer, '.');
-    // *temp = '\0';
-    //
-    // strcat(filename_buffer, ".s.txt");
+    fp_ia_32 = fopen ("aux.s", "r");
 
-    fp_ia_32 = fopen("ia_32.s.txt", "r");
     fp_label_addr = fopen("labels.txt", "w");
 
     if (fp_ia_32 != NULL && fp_label_addr != NULL) {
@@ -189,6 +183,8 @@ void makeLabelAddrFile(char* filename) {
                 } else if(strstr(line, ".data")) {
                     line_count = -7;
                 }
+                // printf("%s%x\n", line, line_count);
+                // getchar();
             }
             token = strchr(line, ':');
             if (strcmp(line, "\n") != 0) {
@@ -222,46 +218,54 @@ int getOpcode (char *mneumonic) {
 }
 
 void writeFile (node_t *head, char *filename) {
-    FILE *fp;
+    FILE *fp_aux, *fp_org;
     node_t *current = head->next;
     char *temp, filename_buffer[MAXCN];
     int i;
 
     strcpy(filename_buffer, filename);
 
-    strcat(filename_buffer, ".s.txt");
+    temp = strchr(filename_buffer, '.');
+    *temp = '\0';
 
-    fp = fopen (filename_buffer, "w");
+    strcat(filename_buffer, ".s");
 
-    if (fp != NULL) {
+    /*won't contain nops, only the translation.*/
+    fp_org = fopen(filename_buffer, "w");
+
+    /*will contain nops in order to help count labels. Will be deleted afterwards.*/
+    fp_aux = fopen("aux.s", "w");
+
+    if (fp_org != NULL && fp_aux != NULL) {
         while (current != NULL) {
             if(strcmp(current->label, "") != 0) {
-                fprintf(fp, "%s:\t", current->label);
+                fprintf(fp_org, "%s:\t", current->label);
+                fprintf(fp_aux, "%s:\t", current->label);
             }
             else {
-                fprintf(fp, "\t");
+                fprintf(fp_org, "\t");
+                fprintf(fp_aux, "\t");
             }
-
-            fprintf(fp, "%s\t", current->opcode);
-
+            fprintf(fp_org, "%s\t", current->opcode);
+            fprintf(fp_aux, "%s\t", current->opcode);
             if(strcmp(current->op2, "") != 0) {
-                fprintf(fp, "%s,\t", current->op1);
+                fprintf(fp_org, "%s,\t", current->op1);
+                fprintf(fp_aux, "%s,\t", current->op1);
             }
             else {
-                fprintf(fp, "%s\t", current->op1);
+                fprintf(fp_org, "%s\t", current->op1);
+                fprintf(fp_aux, "%s\t", current->op1);
             }
-
-            fprintf(fp, "%s", current->op2);
-            fprintf(fp, "\n");
-
+            fprintf(fp_org, "%s", current->op2);
+            fprintf(fp_aux, "%s", current->op2);
+            fprintf(fp_org, "\n");
+            fprintf(fp_aux, "\n");
             for (i = 0; i < current->count; i++) {
-                fprintf(fp, "nop\n");
+                fprintf(fp_aux, "nop\n");
             }
-
-
-
             current = current->next;
         }
-        fclose (fp);
+        fclose (fp_org);
+        fclose (fp_aux);
     }
 }
