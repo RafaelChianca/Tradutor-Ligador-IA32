@@ -9,6 +9,8 @@
 #ifndef MOUNT_H_
   #define MOUNT_H_
   #include "mount.h"
+  #include "convert.h"
+
 #endif
 
 #ifndef ANALYZER_H_
@@ -20,15 +22,13 @@
 void mountProgram(node_t *head, char *filename) {
     FILE *fp, *fp_obj, *fp_nop;
     node_t *current = head->next;
-    char *temp, filename_buffer[MAXCN], *instruction, instruction_aux[100];
-    char addr[10];
+    char *temp, filename_buffer[MAXCN], *instruction, instruction_aux[100], label_aux[100];
+    char addr[10], aux[2];
     int addr_count = -14, text_flag = 0, addr_label, offset, jump_offset = 0;
-    int nops = 0, i;
+    int nops = 0, i, label_flag = 0;
     char *line;
     size_t len = 0;
-    fpos_t pos;
-
-
+    char *io_functions[] = {"EscreveEnter","EscreverChar", "EscreverCharSemEnter", "EscreverHexa", "EscreverInteiro", "EscreverString", "LeerChar", "LeerInteiro", "LeerString", "LerHexa"};
     strcpy(filename_buffer, filename);
 
     temp = strchr(filename_buffer, '.');
@@ -48,9 +48,16 @@ void mountProgram(node_t *head, char *filename) {
             }
             if(text_flag == 1) {
                 if(!strstr(line, "nop") && strcmp(line, "\n") != 0 && !strstr(line, "_start")) {
+                    if(strchr(line, ':') && label_flag == 0){
+                        strcpy(label_aux, line);
+                        strtok(label_aux, ":");
+                        if (inArray(label_aux, io_functions) != -1) {
+                            label_flag = 1;
+                        }
+                    }
                     addr_count+=7;
                     jump_offset = jumpsShortOrNearCode(line, 0x08048080 + addr_count + 6, &nops);
-                    if(jump_offset != -2) {
+                    if(jump_offset != -2 && label_flag == 0) {
                         for (i = 0; i < nops; i++) {
                             fputs("nop\n", fp_nop);
                         }
@@ -68,30 +75,38 @@ void mountProgram(node_t *head, char *filename) {
 
                     addr_label = isLabelInFile(line);
                     if(addr_label != -1) {
-                        if(jump_offset != -2 && jump_offset != -1)
+                        if(jump_offset != -2 && jump_offset != -1) {
                             offset = 0x08048080 + addr_count + 2;
+                        }
                         else {
-                            offset = 0x08048080 + addr_count + 6;
+                            if(strstr(line, "call"))
+                                offset = 0x08048080 + addr_count + 5;
+                            else
+                                offset = 0x08048080 + addr_count + 6;
+
                         }
                         offset = addr_label - offset;
-                        offset = bigToLittleEndian(offset);
+                        if(offset > 0xf || offset < 0x0) {
+                            offset = bigToLittleEndian(offset);
+                        }
                         sprintf(addr, "%x", offset);
                         temp = strchr(instruction_aux, '\n');
                         *temp = '\0';
                         if (jump_offset != -2 && jump_offset != -1) {
-                            sprintf(instruction_aux, "%x", jump_offset);
-                            addr[2] = '\0'; // only the first byte in little endian
-                            if(addr[1] == '0'){
-                                addr[1] = addr[0];
-                                addr[0] = '0';
+                            if (offset < 0xf) {
+                                addr[2] = '\0'; // only the first byte in little endian
+                                strcpy(aux, "0");
+                                strcat(aux, addr);
+                                strcpy(addr, aux);
                             }
+                            sprintf(instruction_aux, "%x", jump_offset);
 
                             strcat(instruction_aux, addr);
                         } else {
                             strcat(instruction_aux, addr);
                         }
                     }
-                    if(instruction_aux != NULL && strcmp(instruction_aux, "\n") != 0) {
+                    if(instruction_aux != NULL && strcmp(instruction_aux, "\n") != 0 && label_flag == 0) {
                         fprintf(fp_obj, "%s\n", instruction_aux);
                     }
                 }
@@ -145,7 +160,6 @@ int jumpsShortOrNearCode(char *instruction, int addr_count, int* nops) {
     if (strstr(instruction, "jl")) {
         offset = isLabelInFile(instruction);
         offset = fabs(offset - addr_count);
-        printf("JL\toffset:%x\n", offset);
         if(!(offset >= -128 && offset < 127)) {
             *nops = 1;
             return -1;
@@ -166,10 +180,8 @@ int jumpsShortOrNearCode(char *instruction, int addr_count, int* nops) {
             return 0x7f;
         }
     }else if (strstr(instruction, "je")) {
-        printf("%s\n", instruction);
         offset = isLabelInFile(instruction);
         offset = fabs(offset - addr_count);
-        printf("JE\toffset:%x\n", offset);
         if(!(offset >= -128 && offset < 127)) {
             *nops = 1;
             return -1;
