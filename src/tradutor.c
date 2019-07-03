@@ -43,6 +43,7 @@ int main(int argc, char *argv[]) {
     makeLabelAddrFile();
     mountProgram(ia_32_head, argv[1]);
 
+    remove("aux.s");
     deleteList(ia_32_head);
 
     return 0;

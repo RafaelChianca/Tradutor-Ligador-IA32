@@ -10,3 +10,4 @@ int getOpcode (char *);
 int bigToLittleEndian(int);
 void writeFile (node_t*, char*);
 void removeChar(char *, char);
+int jumpsShortOrNearCode(char *, int, int *);

@@ -180,7 +180,10 @@ void readInputOutput(node_t* ia_32_head, int* inputOutputFlags, char *filename) 
                     if (strcmp(line, "\n") != 0 && strcmp(line, "nop\n") != 0) {
                         if(token != NULL) {
                             fprintf(fp_org, "%s\n", token);
-                            fprintf(fp_aux, "%s\n", token);
+                            temp = strchr(token, '\n');
+                            if(temp)
+                                *temp = '\0';
+                            fprintf(fp_aux, "%s\t;\n", token);
                         }
                     }
                     else if(strcmp(line, "nop\n") == 0) {
