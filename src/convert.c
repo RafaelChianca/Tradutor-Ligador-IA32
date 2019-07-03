@@ -127,7 +127,7 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         alterAddressingMode(current->op2);
                         ia_32_head = addLine(ia_32_head, "", "push dword", "eax", "", "", 6, "50");
                         ia_32_head = addLine(ia_32_head, "", "push dword", current->op1, "", "", 2, "68");
-                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op2, "", "", 1, "68");
+                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op2, "", "", 1, "ff");
                         ia_32_head = addLine(ia_32_head, "", "call", "LeerString", "", "", 2, "e8");
                         ia_32_head = addLine(ia_32_head, "", "pop dword", "eax", "", "", 6, "58");
                         inputOutputFlags[6] = 1; //LeerString
@@ -137,7 +137,7 @@ node_t* translate(node_t* head, node_t* ia_32_head, int *inputOutputFlags) {
                         alterAddressingMode(current->op2);
                         ia_32_head = addLine(ia_32_head, "", "push dword", "eax", "", "", 6, "50");
                         ia_32_head = addLine(ia_32_head, "", "push dword", current->op1, "", "", 2, "68");
-                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op2, "", "", 1, "68");
+                        ia_32_head = addLine(ia_32_head, "", "push dword", current->op2, "", "", 1, "ff");
                         ia_32_head = addLine(ia_32_head, "", "call", "EscreverString", "", "", 2, "e8");
                         ia_32_head = addLine(ia_32_head, "", "pop dword", "eax", "", "", 6, "58");
                         inputOutputFlags[7] = 1; //EscreverString

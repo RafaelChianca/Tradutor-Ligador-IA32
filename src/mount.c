@@ -89,6 +89,9 @@ int isLabelInFile(char* instruction) {
     size_t len = 0;
     fp = fopen("labels.txt", "r");
 
+    removeChar(instruction, '[');
+    removeChar(instruction, ']');
+
     if(fp != NULL) {
         while ((getline(&line, &len, fp)) != -1) {
             label = strtok(line, ";");
@@ -103,6 +106,16 @@ int isLabelInFile(char* instruction) {
         return -1;
     }
 
+}
+
+void removeChar(char *s, char c){
+    int i, j, n = strlen(s);
+        for (i=j=0; i<n; i++){
+            if (s[i] != c) {
+                s[j++] = s[i];
+            }
+        }
+    s[j] = '\0';
 }
 
 void makeLabelAddrFile() {

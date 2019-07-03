@@ -9,3 +9,4 @@ void makeLabelAddrFile();
 int getOpcode (char *);
 int bigToLittleEndian(int);
 void writeFile (node_t*, char*);
+void removeChar(char *, char);
