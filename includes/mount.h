@@ -3,7 +3,7 @@
   #include "list.h"
 #endif
 
-void mountProgram(node_t *, char *);
+void mountProgram(char *);
 int isLabelInFile(char*);
 void makeLabelAddrFile();
 int getOpcode (char *);

@@ -27,22 +27,10 @@
 
 int main(int argc, char *argv[]) {
 
-    node_t *head, *ia_32_head;
-    int inputOutputsFlags[10] = {0};
+    mountProgram(argv[1]);
 
-    head = initializeList(head);
-    ia_32_head = initializeList(ia_32_head);
-
-    readAsmFile(argv[1], head);
-    ia_32_head = translate(head, ia_32_head, inputOutputsFlags);
-    writeFile(ia_32_head, argv[1]);
-
-    deleteList(head);
-
-    readInputOutput(ia_32_head, inputOutputsFlags, argv[1]);
-    makeLabelAddrFile();
-
-    deleteList(ia_32_head);
-
+    remove("aux.s");
+    remove("aux2.s");
+    remove("labels.txt");
     return 0;
 }

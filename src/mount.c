@@ -19,9 +19,8 @@
 #endif
 
 
-void mountProgram(node_t *head, char *filename) {
+void mountProgram(char *filename) {
     FILE *fp, *fp_obj, *fp_nop;
-    node_t *current = head->next;
     char *temp, filename_buffer[MAXCN], *instruction, instruction_aux[100], label_aux[100];
     char addr[10], aux[2];
     int addr_count = -14, text_flag = 0, addr_label, offset, jump_offset = 0;
@@ -48,13 +47,6 @@ void mountProgram(node_t *head, char *filename) {
             }
             if(text_flag == 1) {
                 if(!strstr(line, "nop") && strcmp(line, "\n") != 0 && !strstr(line, "_start")) {
-                    // if(strchr(line, ':') && label_flag == 0){
-                    //     strcpy(label_aux, line);
-                    //     strtok(label_aux, ":");
-                    //     if (inArray(label_aux, io_functions) != -1) {
-                    //         label_flag = 1;
-                    //     }
-                    // }
                     addr_count+=7;
                     jump_offset = jumpsShortOrNearCode(line, 0x08048080 + addr_count + 6, &nops);
                     if(jump_offset != -2 && label_flag != 0) {
@@ -89,8 +81,6 @@ void mountProgram(node_t *head, char *filename) {
                                 offset = 0x08048080 + addr_count + 6;
                         }
                         offset = addr_label - offset;
-                        printf("1-%x\n", offset);
-                        printf("%s\n", line);
                         if(offset > 0xf || offset < 0x0) {
                             offset = bigToLittleEndian(offset);
                         }
@@ -98,8 +88,6 @@ void mountProgram(node_t *head, char *filename) {
                         temp = strchr(instruction_aux, '\n');
                         *temp = '\0';
                         if (jump_offset != -2 && jump_offset != -1) {
-                            printf("2-%x\n", offset);
-                            getchar();
                             if (offset < 0xf) {
                                 addr[2] = '\0'; // only the first byte in little endian
                                 strcpy(aux, "0");

@@ -9,7 +9,7 @@ O diretório do trabalho está dividido da seguinte forma:
         - obj: arquivos objetos resultantes da compilação do gcc.
 
 Para a utilização do programa, deve-se ter em mente que, como não foi especificado na documentação do trabalho, optamos
-considerar o input de caracteres para a função LerHexa consiste em caracteres maiúsculos apenas (A,B,C,D,E,F). Claro,
+considerar o input de caracteres para a função LerHexa como caracteres maiúsculos apenas (A,B,C,D,E,F). Claro,
 os números continuam funcionando normalmente.
 
 Para a execução do programa, deve-se seguir esse fluxo:
@@ -17,10 +17,23 @@ Para a execução do programa, deve-se seguir esse fluxo:
 - Colocar os arquivos que deseja traduzir na pasta Tradutor-Ligador-IA32/src/asm
 - Entrar na pasta Tradutor-Ligador-IA32/src no terminal;
 - Digitar o comando "make";
-- Um arquivo executável ("tradutor") será criado. Deve-se executá-lo da seguinte forma:
-    "./tradutor <nome do arquivo de entrada em assembly inventado>"
+- Dois arquivos executáveis serão gerados ("tradutor", "ligador"). Deve-se executá-los da seguinte forma:
+    "./tradutor <diretório><nome do arquivo de entrada em assembly inventado>"
+    "./ligador <diretório><nome do arquivo de saída da parte anterior (.s)>"
 
-- Em seguida, o arquivo .s será criado com o mesmo nome do arquivo de entrada.
+- Feito isso, será criado um arquivo .o (objeto) com o mesmo nome do arquivo que foi passado ao tradutor.
+
+Considerações:
+    -Foi possível implementar o processo de tradução do assembly inventado para o IA-32;
+    -Foi possível gerar o código máquina da tradução do assembly inventado, porém não foi concluída a geração do código máquina das
+    funções de input e output criadas;
+    -Na pasta inputOutputs é possível encontrar os códigos em assembly das funções de I/O. Observa-se, também, que esses arquivos contêm
+    "nops" entre as instruções. Isso foi feito de modo que a contagem dos endereços fosse facilitada;
+    -Não foi possível implementar a ligação completa do programa;
+    -O arquivo objeto (.o) contém a tradução parcial para código de máquina, não incluindo os endereços de memória das variáveis na
+    confecção do código da instrução, contendo apenas o ínicio;
+    -As instruções que não utilizam memória contém o código completo.
+
 
 Desenvolvido em UbuntuMate (18.04 LTS Bionic Beaver 64-bit) Versão 1.20.1
 Versão gcc: (Ubuntu 7.4.0-1ubuntu1~18.04.1) 7.4.0
