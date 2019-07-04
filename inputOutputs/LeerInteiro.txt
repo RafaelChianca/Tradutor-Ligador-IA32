@@ -109,7 +109,7 @@ cmp dword [esp], 0xA       ;Analisa se acabou a digitação (foi digitado um 'en
 nop
 nop
 nop
-jne LeituraInteiroLoop  ;Caso ainda não tenha sido um enter
+jne LeituraInteiroLoop;Caso ainda não tenha sido um enter
 nop
 nop
 nop

@@ -48,16 +48,16 @@ void mountProgram(node_t *head, char *filename) {
             }
             if(text_flag == 1) {
                 if(!strstr(line, "nop") && strcmp(line, "\n") != 0 && !strstr(line, "_start")) {
-                    if(strchr(line, ':') && label_flag == 0){
-                        strcpy(label_aux, line);
-                        strtok(label_aux, ":");
-                        if (inArray(label_aux, io_functions) != -1) {
-                            label_flag = 1;
-                        }
-                    }
+                    // if(strchr(line, ':') && label_flag == 0){
+                    //     strcpy(label_aux, line);
+                    //     strtok(label_aux, ":");
+                    //     if (inArray(label_aux, io_functions) != -1) {
+                    //         label_flag = 1;
+                    //     }
+                    // }
                     addr_count+=7;
                     jump_offset = jumpsShortOrNearCode(line, 0x08048080 + addr_count + 6, &nops);
-                    if(jump_offset != -2 && label_flag == 0) {
+                    if(jump_offset != -2 && label_flag != 0) {
                         for (i = 0; i < nops; i++) {
                             fputs("nop\n", fp_nop);
                         }
@@ -66,7 +66,6 @@ void mountProgram(node_t *head, char *filename) {
                         strcpy(instruction_aux, line);
                         strtok(instruction_aux, ";");
                         instruction = strtok(NULL, ";");
-
                         if(instruction == NULL) {
                             continue;
                         }
@@ -79,13 +78,19 @@ void mountProgram(node_t *head, char *filename) {
                             offset = 0x08048080 + addr_count + 2;
                         }
                         else {
-                            if(strstr(line, "call"))
+                            if(strstr(line, "call")) {
                                 offset = 0x08048080 + addr_count + 5;
+                                if(!strstr(instruction, "e8")) {
+                                    strcpy(instruction_aux, "e8\n");
+                                }
+
+                            }
                             else
                                 offset = 0x08048080 + addr_count + 6;
-
                         }
                         offset = addr_label - offset;
+                        printf("1-%x\n", offset);
+                        printf("%s\n", line);
                         if(offset > 0xf || offset < 0x0) {
                             offset = bigToLittleEndian(offset);
                         }
@@ -93,11 +98,17 @@ void mountProgram(node_t *head, char *filename) {
                         temp = strchr(instruction_aux, '\n');
                         *temp = '\0';
                         if (jump_offset != -2 && jump_offset != -1) {
+                            printf("2-%x\n", offset);
+                            getchar();
                             if (offset < 0xf) {
                                 addr[2] = '\0'; // only the first byte in little endian
                                 strcpy(aux, "0");
                                 strcat(aux, addr);
                                 strcpy(addr, aux);
+                                if(strlen(addr) == 3) {
+                                    sprintf(addr, "%x", offset);
+                                    addr[2] = '\0';
+                                }
                             }
                             sprintf(instruction_aux, "%x", jump_offset);
 
@@ -190,6 +201,21 @@ int jumpsShortOrNearCode(char *instruction, int addr_count, int* nops) {
             *nops = 5;
             return 0x74;
         }
+    }else if (strstr(instruction, "jne")) {
+        *nops = 0;
+        return 0x75;
+    }else if (strstr(instruction, "jbe")) {
+        *nops = 0;
+        return 0x76;
+    }else if (strstr(instruction, "jb")) {
+        *nops = 0;
+        return 0x72;
+    }else if (strstr(instruction, "jmp")) {
+        *nops = 0;
+        return 0xeb;
+    }else if (strstr(instruction, "loop")) {
+        *nops = 0;
+        return 0xe2;
     }
     *nops = 0;
     return -2;

@@ -37,7 +37,7 @@ nop
 nop
 nop
 nop
-call EscreveEnter		  ;Escreve o enter no final da impressão
+call EscreveEnter;Escreve o enter no final da impressão
 nop
 nop
 pop dword ebp			  ;Restaura o valor de ebp

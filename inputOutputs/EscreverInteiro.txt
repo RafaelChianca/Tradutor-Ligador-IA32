@@ -167,7 +167,7 @@ nop
 nop
 nop
 nop
-jg GetNumPortionToPrint   ;Faz o loop até que todos os digitos estejam na pilha individualmente
+jg GetNumPortionToPrint;Faz o loop até que todos os digitos estejam na pilha individualmente
 nop
 nop
 nop
@@ -246,13 +246,13 @@ nop
 nop
 nop
 nop
-jne printNumberByNumber   ;Caso ainda não tenha ido todos, volta para o loop
+jne printNumberByNumber;Caso ainda não tenha ido todos, volta para o loop
 nop
 nop
 nop
 nop
 nop
-call EscreveEnter		  ;Escreve o enter no final da impressão
+call EscreveEnter;Escreve o enter no final da impressão
 nop
 nop
 pop dword eax             ;Bota em eax a quantidade de itens impressos

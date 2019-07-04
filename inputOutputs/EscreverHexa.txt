@@ -57,7 +57,7 @@ nop
 nop
 nop
 nop
-loop loopHex ;se não for 0 pula
+loop loopHex;se não for 0 pula
 nop
 nop
 nop
@@ -67,7 +67,7 @@ add dword [esp], 1	;Adiciona 1 no contador de caracteres impressos
 nop
 nop
 nop
-call EscreveEnter		  ;Escreve o enter no final da impressão
+call EscreveEnter;Escreve o enter no final da impressão
 nop
 nop
 FimDoHexa: mov eax, [esp] ;quantidade escrita
